@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+  <meta
+    name="description"
+    content="Founder portfolio of Neeraj Naga Manikanta Prakash Padarthi, building UAV, VTOL, launch, landing, and compact propulsion systems."
+  />
+  <meta name="theme-color" content="#00171F" />
+  <title>Neeraj Prakash | Aerospace Founder &amp; Flight Systems</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&amp;family=Space+Grotesk:wght@400;500;600;700&amp;display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="styles.css?v=20260801-8" />
+</head>
+
+<body>
+  <div class="site-light-field" aria-hidden="true">
+    <span class="light-beam light-beam-blue"></span>
+    <span class="light-beam light-beam-red"></span>
+    <span class="light-beam light-beam-cyan"></span>
+  </div>
+  <canvas class="site-flight-network" id="site-flight-network" aria-hidden="true"></canvas>
+  <div class="scroll-progress" aria-hidden="true"></div>
+
+  <header class="site-header" id="top">
+    <nav class="nav-shell" aria-label="Primary navigation">
+      <a class="brand" href="#top" aria-label="Neeraj home">
+        <span class="brand-index">N/01</span>
+        <span class="brand-name">NEERAJ PRAKASH</span>
+      </a>
+
+      <button class="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false">
+        <span></span>
+        <span></span>
+      </button>
+
+      <div class="nav-links">
+        <a href="#founder">Founder</a>
+        <a href="#systems">Programs</a>
+        <a href="#flight-proof">Flight Proof</a>
+        <a href="#timeline">Journey</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-sticky">
+        <div class="hero-media" aria-hidden="true">
+          <img
+            src="assets/enhanced/magnumwing-top-blueprint-light.png?v=20260801-4"
+            alt=""
+            class="hero-aircraft hero-aircraft-top"
+            width="1920"
+            height="1012"
+            fetchpriority="high"
+          />
+          <img
+            src="assets/enhanced/magnumwing-front-blueprint.jpg?v=20260729-4"
+            alt=""
+            class="hero-aircraft hero-aircraft-front"
+            width="1536"
+            height="1034"
+            fetchpriority="high"
+          />
+          <canvas id="flight-space"></canvas>
+          <div class="hero-light-sweep" aria-hidden="true"></div>
+          <div class="hero-scan"></div>
+          <div class="hero-vignette"></div>
+          <div class="particle-core"></div>
+        </div>
+
+        <div class="hero-grid">
+          <div class="hero-copy reveal">
+            <p class="eyebrow">
+              <span>FOUNDER / AEROSPACE SYSTEMS</span>
+              VU DYNAMICS / APOLLYON DYNAMICS / MAGNUM WINGS
+            </p>
+            <h1 id="hero-title">
+              <span>NEERAJ</span>
+              <span>PRAKASH</span>
+              <strong>FOUNDER. ENGINEER. FLIGHT BUILDER.</strong>
+            </h1>
+            <p class="hero-lede">
+              Neeraj Naga Manikanta Prakash Padarthi develops high-payload UAVs,
+              personal-mobility VTOL concepts, launch hardware, landing systems,
+              and compact propulsion from first sketch to flight validation.
+            </p>
+            <div class="hero-credentials" aria-label="Career highlights">
+              <span>ISRO LEOS</span>
+              <span>IIT KANPUR R&amp;D</span>
+              <span>4 PUBLISHED PATENTS</span>
+            </div>
+            <div class="hero-actions">
+              <a class="primary-link magnetic" href="#systems">
+                <span>Explore active programs</span>
+                <span aria-hidden="true">↗</span>
+              </a>
+              <a class="text-link magnetic" href="#contact">Business enquiry</a>
+            </div>
+          </div>
+
+          <div class="hero-chapters" aria-live="polite">
+            <article class="hero-chapter active" data-hero-chapter="0">
+              <span>01 / AIRFRAME</span>
+              <strong>Aircraft that leave the screen</strong>
+              <p>6+ fixed-wing, tandem-wing, multirotor, hybrid, and heavy-lift systems.</p>
+            </article>
+            <article class="hero-chapter" data-hero-chapter="1">
+              <span>02 / STRUCTURE</span>
+              <strong>25 kg &amp; 100 kg cargo UAVs</strong>
+              <p>Topology-led airframes, landing gear, control surfaces, and production drawings.</p>
+            </article>
+            <article class="hero-chapter" data-hero-chapter="2">
+              <span>03 / VALIDATION</span>
+              <strong>Proof over presentation</strong>
+              <p>CAD, FEM, fabrication, subsystem integration, field testing, and flight footage.</p>
+            </article>
+          </div>
+        </div>
+
+        <div class="hero-coordinate" aria-hidden="true">
+          <span>X 16.5062</span>
+          <i></i>
+          <span>Y 80.6480</span>
+        </div>
+
+        <div class="hero-phase-rail" aria-hidden="true">
+          <span class="active">01</span>
+          <span>02</span>
+          <span>03</span>
+          <i></i>
+        </div>
+      </div>
+    </section>
+
+    <section class="venture-band" aria-label="Verified engineering highlights">
+      <div class="venture-track">
+        <article>
+          <span>01</span>
+          <h2><strong data-count="6" data-suffix="+">0</strong> UAV Platforms</h2>
+          <p>Designed and manufactured across multiple configurations</p>
+        </article>
+        <article>
+          <span>02</span>
+          <h2><strong data-count="50" data-suffix="+">0</strong> CAD Models</h2>
+          <p>Components, jigs, tools, gauges, and complete airframes</p>
+        </article>
+        <article>
+          <span>03</span>
+          <h2><strong data-count="4" data-suffix="">0</strong> Published Patents</h2>
+          <p>Mechanical, thermal, purification, and autonomous systems</p>
+        </article>
+        <article>
+          <span>04</span>
+          <h2><strong data-count="21" data-prefix="₹" data-suffix="L">0</strong> Funded R&amp;D</h2>
+          <p>Co-PI, IIT Roorkee iHub autonomous lawn-mower project</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="founder section-shell" id="founder" aria-labelledby="founder-title">
+      <div class="founder-visual reveal">
+        <img
+          src="assets/generated/neeraj-founder-dark-v4.jpg?v=20260801-4"
+          alt="Neeraj Naga Manikanta Prakash, aerospace founder"
+          width="1200"
+          height="1800"
+          loading="lazy"
+        />
+        <div class="portrait-grid" aria-hidden="true"></div>
+        <span class="portrait-code">NEERAJ PRAKASH / FOUNDER</span>
+      </div>
+
+      <div class="founder-copy reveal">
+        <p class="section-label">THE FOUNDER / THE ENGINEER</p>
+        <h2 id="founder-title">A founder who moves ideas from CAD to flight.</h2>
+        <p class="founder-intro">
+          Neeraj Naga Manikanta Prakash Padarthi is an aerospace systems builder
+          working across founder-led ventures, defense production, research laboratories,
+          and flight programs. His path runs from a first UAV in 2016 to ISRO precision
+          mechanisms, IIT Kanpur-facilitated defense R&amp;D, and today's 25 kg and
+          100 kg cargo-aircraft platforms.
+        </p>
+        <div class="founder-ventures">
+          <span>FOUNDER VENTURES</span>
+          <strong>VU Dynamics</strong>
+          <i></i>
+          <strong>Apollyon Dynamics</strong>
+        </div>
+
+        <div class="founder-principles">
+          <div>
+            <span>01</span>
+            <h3>Engineer the whole system</h3>
+            <p>A self-locking rib architecture increased torsional stiffness while reducing part count by approximately 20%.</p>
+          </div>
+          <div>
+            <span>02</span>
+            <h3>Build for repeatability</h3>
+            <p>Jigs held assembly tolerance under ±0.5 mm and reduced flying-wing rework by approximately 30%.</p>
+          </div>
+          <div>
+            <span>03</span>
+            <h3>Prove it in the real world</h3>
+            <p>FEM-led design and wind-tunnel or CFD validation connect each CAD decision to manufacturable hardware.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="recognition-band" aria-label="Founder recognition">
+      <div class="recognition-track">
+        <article>
+          <span>DEFENSE RECOGNITION</span>
+          <strong>Indian Army</strong>
+          <p>Certificate of Appreciation, HQ Central Command symposium, 2025.</p>
+        </article>
+        <article>
+          <span>INNOVATION PORTFOLIO</span>
+          <strong>4 patents</strong>
+          <p>Autonomous, thermal, refrigeration, and purification systems.</p>
+        </article>
+        <article>
+          <span>RESEARCH LEADERSHIP</span>
+          <strong>₹21 lakh</strong>
+          <p>Co-PI on the IIT Roorkee iHub autonomous lawn-mower project.</p>
+        </article>
+        <article>
+          <span>EARLY DISTINCTION</span>
+          <strong>International rank 24</strong>
+          <p>International Mathematics Olympiad, alongside national science recognition.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="systems section-shell" id="systems" aria-labelledby="systems-title">
+      <div class="systems-heading reveal">
+        <div>
+          <p class="section-label">BLUEPRINTS / REAL HARDWARE / PROOF</p>
+          <h2 id="systems-title">Every program shown as structure first, then real hardware.</h2>
+        </div>
+        <p>
+          Switch between an engineering blueprint and the supplied real project image.
+          Every view keeps the complete aircraft or system visible without decorative cropping.
+        </p>
+      </div>
+
+      <div class="twin-console reveal">
+        <div class="program-nav" role="tablist" aria-label="Aerospace programs">
+          <button
+            class="program-tab active"
+            type="button"
+            role="tab"
+            aria-selected="true"
+            data-program="vtol"
+          >
+            <span>01</span>
+            <span>
+              <strong>Mobility VTOL</strong>
+              <small>Human-carrying concept</small>
+            </span>
+          </button>
+          <button
+            class="program-tab"
+            type="button"
+            role="tab"
+            aria-selected="false"
+            data-program="uav"
+          >
+            <span>02</span>
+            <span>
+              <strong>Cargo UAVs</strong>
+              <small>25 / 100 kg payload</small>
+            </span>
+          </button>
+          <button
+            class="program-tab"
+            type="button"
+            role="tab"
+            aria-selected="false"
+            data-program="propulsion"
+          >
+            <span>03</span>
+            <span>
+              <strong>Compact Jet Core</strong>
+              <small>Apollyon Dynamics</small>
+            </span>
+          </button>
+          <button
+            class="program-tab"
+            type="button"
+            role="tab"
+            aria-selected="false"
+            data-program="launch"
+          >
+            <span>04</span>
+            <span>
+              <strong>Launch &amp; Landing</strong>
+              <small>Ground and recovery systems</small>
+            </span>
+          </button>
+        </div>
+
+        <div class="twin-viewer prototype-active" data-tilt>
+          <div class="viewer-toolbar">
+            <div class="viewer-status">
+              <span class="live-dot"></span>
+              <span id="viewer-status">REAL PROJECT IMAGE / VTOL-01</span>
+            </div>
+            <div class="viewer-tools">
+              <div class="viewer-modes" role="group" aria-label="Program image mode">
+                <button type="button" data-program-view="twin">Blueprint</button>
+                <button class="active" type="button" data-program-view="prototype">Real image</button>
+              </div>
+              <button class="expand-view" type="button" aria-label="Open full-screen aircraft view" title="Full screen">
+                <span aria-hidden="true">↗</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="viewer-stage">
+            <img
+              id="program-image"
+              src="assets/enhanced/vtol-cabin-white.jpg"
+              alt="Real personal mobility VTOL cabin and airframe prototype"
+              width="1600"
+              height="898"
+            />
+            <div class="viewer-reticle" aria-hidden="true">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+            <div class="viewer-sweep" aria-hidden="true"></div>
+          </div>
+
+          <div class="viewer-caption">
+            <div>
+              <p id="program-kicker">PERSONAL MOBILITY / HUMAN-CARRYING VTOL</p>
+              <h3 id="program-title">Personal Mobility VTOL Platform</h3>
+              <p id="program-copy">
+                A flight-demonstrated personal mobility platform connecting cabin packaging,
+                distributed lift, landing supports, propulsion placement, and airframe integration.
+              </p>
+              <ul class="program-scope" id="program-scope">
+                <li>Cabin and occupant packaging</li>
+                <li>Distributed propulsion architecture</li>
+                <li>Prototype integration and flight demonstration</li>
+              </ul>
+            </div>
+            <dl>
+              <div>
+                <dt id="metric-one-label">SYSTEM</dt>
+                <dd id="metric-one-value">VTOL</dd>
+              </div>
+              <div>
+                <dt id="metric-two-label">FOCUS</dt>
+                <dd id="metric-two-value">CABIN + LIFT</dd>
+              </div>
+              <div>
+                <dt id="metric-three-label">STATUS</dt>
+                <dd id="metric-three-value">PROTOTYPE</dd>
+              </div>
+            </dl>
+          </div>
+
+          <div class="program-proof">
+            <div>
+              <span>REAL PROJECT MATERIAL</span>
+              <p>Open the original aircraft, CAD, or manufacturing image.</p>
+            </div>
+            <div class="program-proof-list" id="program-proof-list"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="flight-proof" id="flight-proof" aria-labelledby="flight-proof-title">
+      <div class="flight-proof-shell">
+        <div class="flight-proof-heading reveal">
+          <p class="section-label">EVIDENCE IN MOTION</p>
+          <h2 id="flight-proof-title">The work reaches the runway.</h2>
+          <p>
+            Supplied field footage turns the portfolio from a concept gallery into
+            visible proof of integration, testing, and flight.
+          </p>
+        </div>
+
+        <div class="flight-reels reveal">
+          <article class="flight-reel flight-reel-primary">
+            <div class="flight-reel-media">
+              <video
+                muted
+                loop
+                playsinline
+                controls
+                preload="metadata"
+                poster="assets/showcase/human-vtol-flight-poster.jpg"
+              >
+                <source src="assets/showcase/human-vtol-flight.mp4" type="video/mp4" />
+              </video>
+              <span>FLIGHT DEMONSTRATION / SUPPLIED FOOTAGE</span>
+            </div>
+            <div class="flight-reel-copy">
+              <p>01 / PERSONAL MOBILITY</p>
+              <h3>Human-carrying VTOL demonstrator</h3>
+              <p>
+                Multi-rotor lift architecture, cabin integration, landing structure,
+                and a full-scale aircraft captured during outdoor flight testing.
+              </p>
+            </div>
+          </article>
+
+          <article class="flight-reel">
+            <div class="flight-reel-media">
+              <video
+                muted
+                loop
+                playsinline
+                controls
+                preload="metadata"
+                poster="assets/showcase/fixedwing-field.jpg"
+              >
+                <source src="assets/showcase/fixedwing-flight.mp4" type="video/mp4" />
+              </video>
+              <span>FIELD VALIDATION / SUPPLIED FOOTAGE</span>
+            </div>
+            <div class="flight-reel-copy">
+              <p>02 / FIXED-WING UAV</p>
+              <h3>Airframe validation in operational conditions</h3>
+              <p>
+                Flight footage and field hardware document the path from structural
+                layout and payload integration to practical outdoor validation.
+              </p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="evidence section-shell" id="evidence" aria-labelledby="evidence-title">
+      <div class="evidence-heading reveal">
+        <p class="section-label">MEASURED ENGINEERING / RESUME VERIFIED</p>
+        <h2 id="evidence-title">Credibility measured in payload, tolerance, and flight outcomes.</h2>
+      </div>
+
+      <div class="evidence-track reveal">
+        <article>
+          <span>01 / CARGO UAV</span>
+          <strong>25 kg</strong>
+          <h3>Prototype-ready airframe</h3>
+          <p>Full structural and aerodynamic design, control surfaces, manufacturing drawings, and subsystem coordination.</p>
+        </article>
+        <article>
+          <span>02 / HEAVY LIFT</span>
+          <strong>100 kg</strong>
+          <h3>Large-format platform</h3>
+          <p>Airframe architecture, multi-subsystem integration, and landing gear designed for hard-landing load cases up to 3g.</p>
+        </article>
+        <article>
+          <span>03 / PRODUCTION</span>
+          <strong>±0.5 mm</strong>
+          <h3>Repeatable assembly</h3>
+          <p>Complete flying-wing jig and fixture system supporting dimensional control and simultaneous batch production.</p>
+        </article>
+        <article>
+          <span>04 / SPACE SYSTEMS</span>
+          <strong>6-DoF</strong>
+          <h3>ISRO precision motion</h3>
+          <p>Stewart-platform and ROSAT-3 sensor-mount work using NX, structural analysis, modal validation, and opto-mechanical alignment.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="project-archive" aria-labelledby="archive-title">
+      <div class="archive-shell">
+        <div class="archive-heading reveal">
+          <div>
+            <p class="section-label">BUILD ARCHIVE</p>
+            <h2 id="archive-title">Prototype reality, not stock aerospace imagery.</h2>
+          </div>
+          <p>
+            The supplied photographs document aircraft bodies, structures, CAD,
+            launch hardware, propulsion rigs, and workshop builds from the project archive.
+          </p>
+        </div>
+
+        <div class="archive-grid reveal">
+          <button
+            class="archive-item archive-item-wide"
+            type="button"
+            data-lightbox="assets/enhanced/magnumwing-top-blueprint-light.png"
+            data-caption="Fixed-wing UAV / top-view configuration study"
+          >
+            <img
+              src="assets/enhanced/magnumwing-top-blueprint-light.png"
+              alt="Top-view CAD configuration of a fixed-wing UAV"
+              width="1200"
+              height="632"
+              loading="lazy"
+            />
+            <span><b>01</b> Fixed-wing configuration</span>
+          </button>
+          <button
+            class="archive-item archive-item-tall"
+            type="button"
+            data-lightbox="assets/enhanced/structural-cad-wing.jpg"
+            data-caption="Wing structure / internal CAD architecture"
+          >
+            <img
+              src="assets/enhanced/structural-cad-wing.jpg"
+              alt="CAD view of an internal UAV wing structure"
+              width="899"
+              height="1600"
+              loading="lazy"
+            />
+            <span><b>02</b> Internal wing structure</span>
+          </button>
+          <button
+            class="archive-item"
+            type="button"
+            data-lightbox="assets/enhanced/vtol-airframe-hangar.jpg"
+            data-caption="Personal mobility VTOL / full airframe manufacturing"
+          >
+            <img
+              src="assets/enhanced/vtol-airframe-hangar.jpg"
+              alt="Human-carrying VTOL airframe inside a manufacturing hangar"
+              width="1200"
+              height="900"
+              loading="lazy"
+            />
+            <span><b>03</b> VTOL airframe build</span>
+          </button>
+          <button
+            class="archive-item"
+            type="button"
+            data-lightbox="assets/enhanced/vtol-cabin-red.jpg"
+            data-caption="Mobility cabin / product body development"
+          >
+            <img
+              src="assets/enhanced/vtol-cabin-red.jpg"
+              alt="Red passenger VTOL cabin prototype"
+              width="1200"
+              height="900"
+              loading="lazy"
+            />
+            <span><b>04</b> Cabin body development</span>
+          </button>
+          <button
+            class="archive-item archive-item-wide"
+            type="button"
+            data-lightbox="assets/enhanced/catapult-launcher.jpg"
+            data-caption="Mobile UAV catapult / field launch hardware"
+          >
+            <img
+              src="assets/enhanced/catapult-launcher.jpg"
+              alt="Mobile truss catapult system for UAV field launch"
+              width="811"
+              height="528"
+              loading="lazy"
+            />
+            <span><b>05</b> Mobile catapult system</span>
+          </button>
+          <button
+            class="archive-item"
+            type="button"
+            data-lightbox="assets/enhanced/quad-uav-prototype.jpg"
+            data-caption="Multirotor prototype / subsystem packaging"
+          >
+            <img
+              src="assets/enhanced/quad-uav-prototype.jpg"
+              alt="Physical multirotor UAV prototype"
+              width="1152"
+              height="864"
+              loading="lazy"
+            />
+            <span><b>06</b> Multirotor prototype</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section class="toolchain" aria-labelledby="toolchain-title">
+      <div class="toolchain-shell">
+        <p class="section-label">ENGINEERING STACK</p>
+        <h2 id="toolchain-title">Design, simulation, and manufacturing tools behind the systems.</h2>
+        <div class="tool-marquee" aria-label="Engineering software">
+          <div class="tool-marquee-track">
+            <span>SolidWorks</span>
+            <span>CATIA</span>
+            <span>NX</span>
+            <span>Ansys</span>
+            <span>ANSA</span>
+            <span>AutoCAD</span>
+            <span>Fusion 360</span>
+            <span>Aspire</span>
+            <span>SolidCAM</span>
+            <span>HyperMesh</span>
+            <span aria-hidden="true">SolidWorks</span>
+            <span aria-hidden="true">CATIA</span>
+            <span aria-hidden="true">NX</span>
+            <span aria-hidden="true">Ansys</span>
+            <span aria-hidden="true">ANSA</span>
+            <span aria-hidden="true">AutoCAD</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="timeline section-shell" id="timeline" aria-labelledby="timeline-title">
+      <div class="timeline-heading reveal">
+        <p class="section-label">THE FOUNDER JOURNEY</p>
+        <h2 id="timeline-title">Built through curiosity, research, leadership, and flight.</h2>
+      </div>
+
+      <div class="timeline-line reveal">
+        <article>
+          <time>2016 / FIRST UAV</time>
+          <span class="timeline-node"></span>
+          <h3>The Flight Path Begins</h3>
+          <p>The first complete UAV build established a systems mindset. Early work also explored a women-and-child safety concept developed with his younger brother.</p>
+        </article>
+        <article>
+          <time>2020–2024 / GMRIT</time>
+          <span class="timeline-node"></span>
+          <h3>Innovation &amp; Leadership</h3>
+          <p>Robotics Club chairperson, SAE coordinator, engineering competition winner, funded prototypes, and the foundation of a four-patent portfolio.</p>
+        </article>
+        <article>
+          <time>2023 / ISRO LEOS</time>
+          <span class="timeline-node"></span>
+          <h3>Precision Space Systems</h3>
+          <p>6-DoF Stewart platform, ROSAT-3 sensor mounts, NX Siemens analysis, and opto-mechanical alignment.</p>
+        </article>
+        <article>
+          <time>2024–2025 / IIT KANPUR</time>
+          <span class="timeline-node"></span>
+          <h3>Defense UAV R&amp;D</h3>
+          <p>Technical in-charge for 6+ fixed-wing, multirotor, tandem-wing, flying-wing, and hybrid platforms.</p>
+        </article>
+        <article>
+          <time>2025–PRESENT / MAGNUM WINGS</time>
+          <span class="timeline-node"></span>
+          <h3>Heavy-Lift Cargo UAVs</h3>
+          <p>Senior design work on 25 kg and 100 kg payload platforms, landing gear, topology optimization, and production drawings.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="contact" id="contact" aria-labelledby="contact-title">
+      <div class="contact-orbit" aria-hidden="true"></div>
+      <div class="contact-shell reveal">
+        <div class="contact-intro">
+          <p class="section-label">BUSINESS / R&amp;D / COLLABORATION</p>
+          <h2 id="contact-title">Bring the next aircraft system into focus.</h2>
+          <p>
+            Connect directly with Neeraj Naga Manikanta Prakash Padarthi for
+            aircraft architecture, UAV and VTOL programs, launch hardware,
+            landing systems, structural development, and R&amp;D collaboration.
+          </p>
+          <a class="primary-link magnetic" href="mailto:neerajprakash995@gmail.com?subject=Aerospace%20program%20enquiry">
+            <span>Start a business conversation</span>
+            <span aria-hidden="true">↗</span>
+          </a>
+        </div>
+
+        <div class="contact-directory" aria-label="Contact options">
+          <a href="mailto:neerajprakash995@gmail.com">
+            <span>EMAIL</span>
+            <strong>neerajprakash995@gmail.com</strong>
+            <i aria-hidden="true">↗</i>
+          </a>
+          <a href="tel:+919959946164">
+            <span>PHONE</span>
+            <strong>+91 99599 46164</strong>
+            <i aria-hidden="true">↗</i>
+          </a>
+          <a href="https://wa.me/919959946164" target="_blank" rel="noreferrer">
+            <span>WHATSAPP</span>
+            <strong>Open a direct chat</strong>
+            <i aria-hidden="true">↗</i>
+          </a>
+          <a
+            href="https://www.linkedin.com/in/neerajprakashpadarthi"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <span>LINKEDIN</span>
+            <strong>neerajprakashpadarthi</strong>
+            <i aria-hidden="true">↗</i>
+          </a>
+          <a href="assets/Resume.pdf" download>
+            <span>PROFILE</span>
+            <strong>Download founder résumé</strong>
+            <i aria-hidden="true">↓</i>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <span>NEERAJ NAGA MANIKANTA PRAKASH PADARTHI</span>
+    <span>FOUNDER / AEROSPACE SYSTEMS BUILDER</span>
+    <a href="#top">BACK TO TOP ↑</a>
+  </footer>
+
+  <dialog class="image-dialog" aria-label="Full-screen aircraft project image">
+    <button class="dialog-close" type="button" aria-label="Close full-screen view">×</button>
+    <img src="assets/enhanced/vtol-cabin-white.jpg" alt="" />
+    <p></p>
+  </dialog>
+
+  <script src="assets/vendor/three.min.js?v=20260801-4"></script>
+  <script src="script.js?v=20260801-7"></script>
+</body>
+
+</html>
