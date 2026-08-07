@@ -501,6 +501,60 @@ navLinks.forEach((link) => {
   });
 });
 
+document.querySelectorAll(".contact-copy").forEach((button) => {
+  button.addEventListener("click", async () => {
+    const value = button.dataset.copyValue;
+    if (!value) return;
+
+    try {
+      await navigator.clipboard.writeText(value);
+    } catch {
+      const input = document.createElement("textarea");
+      input.value = value;
+      input.setAttribute("readonly", "");
+      input.style.position = "fixed";
+      input.style.opacity = "0";
+      document.body.append(input);
+      input.select();
+      document.execCommand("copy");
+      input.remove();
+    }
+
+    const originalLabel = `Copy ${button.dataset.copyName}`;
+    button.classList.add("copied");
+    button.setAttribute("aria-label", `${button.dataset.copyName} copied`);
+    button.setAttribute("title", `${button.dataset.copyName} copied`);
+
+    window.setTimeout(() => {
+      button.classList.remove("copied");
+      button.setAttribute("aria-label", originalLabel);
+      button.setAttribute("title", originalLabel);
+    }, 1800);
+  });
+});
+
+const contactTopics = [...document.querySelectorAll(".contact-topic")];
+const contactPrimary = document.querySelector("[data-contact-primary]");
+const contactPrimaryLabel = document.querySelector("[data-contact-primary-label]");
+const contactSelection = document.querySelector("[data-contact-selection]");
+
+contactTopics.forEach((topic) => {
+  topic.addEventListener("click", () => {
+    const selectedTopic = topic.dataset.contactTopic;
+    if (!selectedTopic || !contactPrimary || !contactPrimaryLabel || !contactSelection) return;
+
+    contactTopics.forEach((item) => {
+      const isSelected = item === topic;
+      item.classList.toggle("active", isSelected);
+      item.setAttribute("aria-pressed", String(isSelected));
+    });
+
+    contactSelection.textContent = selectedTopic;
+    contactPrimaryLabel.textContent = `Discuss ${selectedTopic.toLowerCase()}`;
+    contactPrimary.href = `mailto:neerajprakash995@gmail.com?subject=${encodeURIComponent(`${selectedTopic} enquiry`)}`;
+  });
+});
+
 const lightingSections = [
   ...document.querySelectorAll(
     ".founder, .systems, .flight-proof, .evidence, .project-archive, .toolchain, .timeline, .contact"
@@ -535,7 +589,13 @@ const sectionObserver = new IntersectionObserver(
         document.documentElement.style.setProperty("--section-light-rgb", sectionLight);
       }
       navLinks.forEach((link) => {
-        link.classList.toggle("active", link.getAttribute("href") === `#${entry.target.id}`);
+        const isActive = link.getAttribute("href") === `#${entry.target.id}`;
+        link.classList.toggle("active", isActive);
+        if (isActive) {
+          link.setAttribute("aria-current", "page");
+        } else {
+          link.removeAttribute("aria-current");
+        }
       });
     });
   },
