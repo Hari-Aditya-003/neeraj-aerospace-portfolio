@@ -27,12 +27,22 @@ const createSiteFlightNetwork = () => {
     speed: 0.006 + hash(index + 18.7) * 0.006,
     scale: 0.72 + hash(index + 31.2) * 0.62,
   }));
-  const stars = Array.from({ length: compact ? 155 : 360 }, (_, index) => ({
+  const stars = Array.from({ length: compact ? 220 : 520 }, (_, index) => ({
     x: hash(index + 70.4),
     y: hash(index + 140.7),
     size: 0.4 + hash(index + 210.9) * 1.15,
     alpha: 0.08 + hash(index + 280.2) * 0.2,
     phase: hash(index + 336.1) * Math.PI * 2,
+    hue: hash(index + 366.4) > 0.9 ? "255,232,189" : "173,235,255",
+    drift: 0.0004 + hash(index + 391.7) * 0.0011,
+  }));
+  const meteors = Array.from({ length: compact ? 2 : 4 }, (_, index) => ({
+    offset: hash(index + 942.2),
+    speed: 0.014 + hash(index + 975.4) * 0.012,
+    x: 0.08 + hash(index + 1008.6) * 0.82,
+    y: 0.06 + hash(index + 1039.8) * 0.48,
+    length: 54 + hash(index + 1071.1) * 92,
+    phase: hash(index + 1102.3) * Math.PI * 2,
   }));
   const motionDots = Array.from({ length: compact ? 120 : 340 }, (_, index) => ({
     x: hash(index + 412.6),
@@ -132,8 +142,33 @@ const createSiteFlightNetwork = () => {
     const networkEnergy = 0.72 + state.scrollVelocity * 0.74;
     stars.forEach((star) => {
       const pulse = 0.58 + Math.sin(seconds * 0.72 + star.phase) * 0.42;
-      context.fillStyle = `rgba(173,235,255,${star.alpha * pulse})`;
-      context.fillRect(star.x * state.width, star.y * state.height, star.size, star.size);
+      const x = ((star.x + seconds * star.drift) % 1) * state.width;
+      const y = star.y * state.height + Math.sin(seconds * 0.2 + star.phase) * 2.2;
+      context.fillStyle = `rgba(${star.hue},${star.alpha * pulse})`;
+      context.fillRect(x, y, star.size, star.size);
+    });
+
+    meteors.forEach((meteor) => {
+      const progress = (seconds * meteor.speed + meteor.offset) % 1;
+      const windowed = Math.max(0, 1 - Math.abs(progress - 0.5) / 0.11);
+      if (windowed <= 0) return;
+
+      const x = (meteor.x + (progress - 0.5) * 0.34) * state.width;
+      const y = (meteor.y + (progress - 0.5) * 0.2) * state.height;
+      const tail = meteor.length * windowed;
+      context.save();
+      context.globalCompositeOperation = "lighter";
+      const meteorGlow = context.createLinearGradient(x - tail, y - tail * 0.42, x, y);
+      meteorGlow.addColorStop(0, "rgba(173,235,255,0)");
+      meteorGlow.addColorStop(0.78, `rgba(173,235,255,${0.1 * windowed})`);
+      meteorGlow.addColorStop(1, `rgba(255,255,255,${0.42 * windowed})`);
+      context.strokeStyle = meteorGlow;
+      context.lineWidth = 0.8 + windowed * 0.7;
+      context.beginPath();
+      context.moveTo(x - tail, y - tail * 0.42);
+      context.lineTo(x, y);
+      context.stroke();
+      context.restore();
     });
 
     motionDots.forEach((dot) => {
@@ -847,7 +882,13 @@ const createFlightScene = () => {
   const camera = new THREE.PerspectiveCamera(46, 1, 0.1, 100);
   camera.position.set(0, 0, 9.4);
 
-  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+  let renderer;
+  try {
+    renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+  } catch {
+    canvas.hidden = true;
+    return null;
+  }
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.6));
   renderer.setClearColor(0x000000, 0);
 
