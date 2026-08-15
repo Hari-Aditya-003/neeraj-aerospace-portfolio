@@ -332,45 +332,16 @@
           </p>
         </div>
 
-        <div class="flight-proof-console reveal">
-          <div class="flight-proof-stage">
-            <video id="flight-proof-video" muted loop playsinline controls preload="metadata"
-              poster="assets/showcase/flight-proof/personal-mobility-vtol-poster.jpg">
-              <source id="flight-proof-source" src="assets/showcase/flight-proof/personal-mobility-vtol.mp4"
-                type="video/mp4" />
-            </video>
-            <div class="flight-proof-stage-bar" aria-hidden="true">
-              <span id="flight-proof-stage-label">FLIGHT DEMONSTRATION / SUPPLIED FOOTAGE</span>
-              <span id="flight-proof-stage-count">01 / 11</span>
-            </div>
-          </div>
-
-          <aside class="flight-proof-detail" aria-live="polite">
-            <div class="flight-proof-detail-head">
-              <span id="flight-proof-index">01</span>
-              <span id="flight-proof-duration">01:17</span>
-            </div>
-            <p id="flight-proof-kicker">PERSONAL MOBILITY / OUTDOOR FLIGHT</p>
-            <h3 id="flight-proof-name">Personal-mobility VTOL demonstrator</h3>
-            <p id="flight-proof-description">
-              Full-scale distributed-lift vehicle captured in sustained outdoor hover and translation,
-              documenting the integrated cabin, rotor frame, landing structure, and flight-control system.
-            </p>
-            <dl id="flight-proof-facts">
-              <div><dt>EVIDENCE</dt><dd>SUSTAINED FLIGHT</dd></div>
-              <div><dt>SYSTEM</dt><dd>DISTRIBUTED LIFT</dd></div>
-              <div><dt>ENVIRONMENT</dt><dd>OUTDOOR FIELD</dd></div>
-            </dl>
-            <div class="flight-proof-controls">
-              <button type="button" id="flight-proof-previous" aria-label="Show previous video" title="Previous video">←</button>
-              <span>SELECT RECORD</span>
-              <button type="button" id="flight-proof-next" aria-label="Show next video" title="Next video">→</button>
-            </div>
-          </aside>
+        <div class="flight-proof-summary reveal" aria-label="Flight proof archive summary">
+          <div><strong>11</strong><span>REAL TEST VIDEOS</span></div>
+          <div><strong>04</strong><span>EVIDENCE CLASSES</span></div>
+          <div><strong>LOOP</strong><span>CONTINUOUS FIELD ARCHIVE</span></div>
         </div>
 
-        <div class="flight-proof-rail reveal" id="flight-proof-rail" role="tablist"
-          aria-label="Field-test video records"></div>
+        <div class="flight-proof-wall reveal" id="flight-proof-wall"
+          aria-label="Continuously playing field-test video archive">
+          <p class="flight-proof-loading">Loading real test videos...</p>
+        </div>
       </div>
     </section>
 

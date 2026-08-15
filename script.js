@@ -1054,134 +1054,109 @@ const flightProofRecords = [
   },
 ];
 
-const flightProofVideo = document.querySelector("#flight-proof-video");
-const flightProofSource = document.querySelector("#flight-proof-source");
-const flightProofRail = document.querySelector("#flight-proof-rail");
-const flightProofStageLabel = document.querySelector("#flight-proof-stage-label");
-const flightProofStageCount = document.querySelector("#flight-proof-stage-count");
-const flightProofIndex = document.querySelector("#flight-proof-index");
-const flightProofDuration = document.querySelector("#flight-proof-duration");
-const flightProofKicker = document.querySelector("#flight-proof-kicker");
-const flightProofName = document.querySelector("#flight-proof-name");
-const flightProofDescription = document.querySelector("#flight-proof-description");
-const flightProofFacts = document.querySelector("#flight-proof-facts");
-const flightProofPrevious = document.querySelector("#flight-proof-previous");
-const flightProofNext = document.querySelector("#flight-proof-next");
-let currentFlightProof = 0;
-let flightProofVisible = false;
+const flightProofWall = document.querySelector("#flight-proof-wall");
+const portraitFlightProofRecords = new Set(["06", "08", "09", "10", "11"]);
+let flightProofVideos = [];
 
-const renderFlightProofRail = () => {
-  const records = flightProofRecords.map((record, recordIndex) => {
-    const button = document.createElement("button");
-    const image = document.createElement("img");
-    const copy = document.createElement("span");
-    const meta = document.createElement("small");
-    const title = document.createElement("strong");
+const renderFlightProofWall = () => {
+  const cards = flightProofRecords.map((record) => {
+    const card = document.createElement("article");
+    const media = document.createElement("div");
+    const video = document.createElement("video");
+    const source = document.createElement("source");
+    const overlay = document.createElement("div");
+    const signal = document.createElement("span");
+    const signalDot = document.createElement("i");
+    const count = document.createElement("span");
+    const copy = document.createElement("div");
+    const kicker = document.createElement("p");
+    const title = document.createElement("h3");
+    const description = document.createElement("p");
+    const facts = document.createElement("dl");
+    const titleId = `flight-proof-title-${record.index}`;
+    const descriptionId = `flight-proof-description-${record.index}`;
 
-    button.type = "button";
-    button.className = "flight-proof-record";
-    button.id = `flight-proof-tab-${record.index}`;
-    button.role = "tab";
-    button.dataset.flightProof = String(recordIndex);
-    button.setAttribute("aria-selected", String(recordIndex === 0));
-    button.setAttribute("aria-controls", "flight-proof-video");
-    button.tabIndex = recordIndex === 0 ? 0 : -1;
-    image.src = record.poster;
-    image.alt = "";
-    image.loading = "lazy";
-    meta.textContent = `${record.index} / ${record.duration}`;
+    card.className = `flight-proof-card ${
+      portraitFlightProofRecords.has(record.index) ? "is-portrait" : "is-landscape"
+    }`;
+    card.setAttribute("aria-labelledby", titleId);
+    media.className = "flight-proof-card-media";
+    video.autoplay = !reducedMotion;
+    video.defaultMuted = true;
+    video.muted = true;
+    video.loop = true;
+    video.playsInline = true;
+    video.preload = "metadata";
+    video.poster = record.poster;
+    video.controls = reducedMotion;
+    video.setAttribute("aria-describedby", descriptionId);
+    video.setAttribute("aria-label", `${record.title}, real test video`);
+    source.src = record.video;
+    source.type = "video/mp4";
+    video.append(source);
+
+    overlay.className = "flight-proof-card-overlay";
+    signal.className = "flight-proof-card-signal";
+    signalDot.setAttribute("aria-hidden", "true");
+    signal.append(signalDot, "REAL TEST VIDEO");
+    count.className = "flight-proof-card-count";
+    count.textContent = `${record.index} / ${String(flightProofRecords.length).padStart(2, "0")}`;
+    overlay.append(signal, count);
+    media.append(video, overlay);
+
+    copy.className = "flight-proof-card-copy";
+    kicker.className = "flight-proof-card-kicker";
+    kicker.textContent = record.kicker;
+    title.id = titleId;
     title.textContent = record.title;
-    copy.append(meta, title);
-    button.append(image, copy);
-    return button;
+    description.id = descriptionId;
+    description.className = "flight-proof-card-description";
+    description.textContent = record.description;
+    facts.className = "flight-proof-card-facts";
+    facts.replaceChildren(
+      ...record.facts.map(([labelText, valueText]) => {
+        const wrapper = document.createElement("div");
+        const label = document.createElement("dt");
+        const value = document.createElement("dd");
+        label.textContent = labelText;
+        value.textContent = valueText;
+        wrapper.append(label, value);
+        return wrapper;
+      })
+    );
+
+    const duration = document.createElement("span");
+    duration.className = "flight-proof-card-duration";
+    duration.textContent = record.duration;
+    duration.setAttribute("aria-label", `Duration ${record.duration}`);
+    copy.append(kicker, title, description, facts, duration);
+    card.append(media, copy);
+
+    video.addEventListener("playing", () => card.classList.add("is-playing"));
+    video.addEventListener("waiting", () => card.classList.remove("is-playing"));
+    video.addEventListener("error", () => card.classList.add("has-video-error"));
+    return card;
   });
-  flightProofRail.replaceChildren(...records);
+
+  flightProofWall.replaceChildren(...cards);
+  flightProofVideos = Array.from(flightProofWall.querySelectorAll("video"));
 };
 
-const renderFlightProof = (recordIndex, { autoplay = true, revealRecord = true } = {}) => {
-  const normalizedIndex =
-    (recordIndex + flightProofRecords.length) % flightProofRecords.length;
-  const record = flightProofRecords[normalizedIndex];
-  currentFlightProof = normalizedIndex;
+const playFlightProofWall = () => {
+  if (document.hidden || reducedMotion) return;
+  flightProofVideos.forEach((video) => video.play().catch(() => {}));
+};
 
-  flightProofVideo.pause();
-  flightProofVideo.poster = record.poster;
-  flightProofSource.src = record.video;
-  flightProofVideo.load();
-  flightProofStageLabel.textContent = record.label;
-  flightProofStageCount.textContent = `${record.index} / ${String(flightProofRecords.length).padStart(2, "0")}`;
-  flightProofIndex.textContent = record.index;
-  flightProofDuration.textContent = record.duration;
-  flightProofKicker.textContent = record.kicker;
-  flightProofName.textContent = record.title;
-  flightProofDescription.textContent = record.description;
-  flightProofFacts.replaceChildren(
-    ...record.facts.map(([labelText, valueText]) => {
-      const wrapper = document.createElement("div");
-      const label = document.createElement("dt");
-      const value = document.createElement("dd");
-      label.textContent = labelText;
-      value.textContent = valueText;
-      wrapper.append(label, value);
-      return wrapper;
-    })
-  );
-
-  flightProofRail.querySelectorAll(".flight-proof-record").forEach((button) => {
-    const active = Number(button.dataset.flightProof) === normalizedIndex;
-    button.classList.toggle("active", active);
-    button.setAttribute("aria-selected", String(active));
-    button.tabIndex = active ? 0 : -1;
-    if (active) {
-      flightProofVideo.setAttribute("aria-labelledby", button.id);
-      if (revealRecord) {
-        button.scrollIntoView({ behavior: reducedMotion ? "auto" : "smooth", block: "nearest", inline: "nearest" });
-      }
-    }
-  });
-
-  if (autoplay && flightProofVisible && !reducedMotion) {
-    flightProofVideo.play().catch(() => {});
+renderFlightProofWall();
+requestAnimationFrame(playFlightProofWall);
+window.addEventListener("load", playFlightProofWall);
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden) {
+    flightProofVideos.forEach((video) => video.pause());
+    return;
   }
-};
-
-renderFlightProofRail();
-renderFlightProof(0, { autoplay: false, revealRecord: false });
-
-flightProofRail.addEventListener("click", (event) => {
-  const button =
-    event.target instanceof Element ? event.target.closest("[data-flight-proof]") : null;
-  if (!button) return;
-  renderFlightProof(Number(button.dataset.flightProof));
+  playFlightProofWall();
 });
-
-flightProofRail.addEventListener("keydown", (event) => {
-  if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
-  event.preventDefault();
-  let nextIndex = currentFlightProof;
-  if (event.key === "ArrowLeft") nextIndex -= 1;
-  if (event.key === "ArrowRight") nextIndex += 1;
-  if (event.key === "Home") nextIndex = 0;
-  if (event.key === "End") nextIndex = flightProofRecords.length - 1;
-  renderFlightProof(nextIndex);
-  flightProofRail.querySelector(".flight-proof-record.active")?.focus();
-});
-
-flightProofPrevious.addEventListener("click", () => renderFlightProof(currentFlightProof - 1));
-flightProofNext.addEventListener("click", () => renderFlightProof(currentFlightProof + 1));
-
-const flightVideoObserver = new IntersectionObserver(
-  ([entry]) => {
-    flightProofVisible = entry.isIntersecting;
-    if (entry.isIntersecting && !reducedMotion) {
-      flightProofVideo.play().catch(() => {});
-    } else {
-      flightProofVideo.pause();
-    }
-  },
-  { threshold: 0.42 }
-);
-flightVideoObserver.observe(flightProofVideo);
 
 if (!reducedMotion) {
   hero.addEventListener("pointermove", (event) => {
