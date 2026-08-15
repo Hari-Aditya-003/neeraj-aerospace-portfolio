@@ -1,0 +1,28 @@
+{
+  "id": "solarcleano-f1a",
+  "index": "02",
+  "category": "FIELD ROBOTICS",
+  "status": "VERIFIED PRODUCT",
+  "navTitle": "SolarCleano F1A",
+  "navSubtitle": "Autonomous PV cleaning",
+  "kicker": "SOLARCLEANO F1A / AUTONOMOUS SOLAR MAINTENANCE",
+  "title": "Autonomous Solar-Panel Cleaning Robot",
+  "watermark": "F1A / FIELD ROBOTICS",
+  "description": "SolarCleano's F1A is an autonomous dry-cleaning robot for photovoltaic arrays. Manufacturer documentation specifies a 1200 mm brush, movement up to 25 m/min, four hours of battery operation, and a 20-degree climbing capability.",
+  "scope": ["Autonomous dry cleaning", "Photovoltaic-array mobility", "Battery-powered field operation"],
+  "metrics": [
+    {"label": "SIZE", "value": "1450 x 1300 mm"},
+    {"label": "MASS", "value": "85 kg"},
+    {"label": "SPEED", "value": "25 m/min"},
+    {"label": "RUNTIME", "value": "4 h"}
+  ],
+  "views": [
+    {"key": "perspective", "label": "Perspective", "image": "views/perspective.jpg", "alt": "Perspective visualization of the SolarCleano F1A solar-panel cleaning robot"},
+    {"key": "top", "label": "Top", "image": "views/top.jpg", "alt": "Top visualization of the SolarCleano F1A solar-panel cleaning robot"},
+    {"key": "front", "label": "Front", "image": "views/front.jpg", "alt": "Front visualization of the SolarCleano F1A solar-panel cleaning robot"},
+    {"key": "side", "label": "Side", "image": "views/side.jpg", "alt": "Side visualization of the SolarCleano F1A solar-panel cleaning robot"}
+  ],
+  "sourceBoard": "../../new_updated /ChatGPT Image Aug 13, 2026, 09_29_59 PM.png",
+  "dataBasis": "Displayed specifications come from the official F1A datasheet; the supplied visualization is used only for the four-view presentation.",
+  "reference": {"label": "Official SolarCleano F1A datasheet", "url": "https://solarcleano.com/files/products/1639563113_SolarCleano-Solarcleano-F1A-data-sheet-Metrics-EN.pdf"}
+}

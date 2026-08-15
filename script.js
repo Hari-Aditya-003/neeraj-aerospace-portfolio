@@ -282,189 +282,8 @@ const createSiteFlightNetwork = () => {
 
 window.siteFlightNetwork = createSiteFlightNetwork();
 
-const programs = {
-  vtol: {
-    views: {
-      twin: {
-        image: "assets/enhanced/jet-vtol-cad.jpg",
-        alt: "Real CAD structure view of the personal mobility VTOL concept",
-        status: "CAD BLUEPRINT / VTOL-01",
-      },
-      prototype: {
-        image: "assets/enhanced/vtol-cabin-white.jpg",
-        alt: "Physical personal mobility VTOL cabin and airframe prototype",
-        status: "REAL PROJECT IMAGE / VTOL-01",
-      },
-    },
-    kicker: "PERSONAL MOBILITY / HUMAN-CARRYING VTOL",
-    title: "Personal Mobility VTOL Platform",
-    copy:
-      "A flight-demonstrated personal mobility platform connecting cabin packaging, distributed lift, landing supports, propulsion placement, and complete airframe integration.",
-    scope: [
-      "Cabin and occupant packaging",
-      "Distributed propulsion architecture",
-      "Prototype integration and flight demonstration",
-    ],
-    metrics: [
-      ["SYSTEM", "VTOL"],
-      ["EVIDENCE", "FLIGHT"],
-      ["FOCUS", "INTEGRATION"],
-    ],
-    proof: [
-      {
-        image: "assets/enhanced/vtol-cabin-white.jpg",
-        label: "Cabin prototype",
-        caption: "Personal mobility VTOL / cabin and landing structure",
-      },
-      {
-        image: "assets/enhanced/vtol-airframe-hangar.jpg",
-        label: "Full airframe",
-        caption: "Personal mobility VTOL / full airframe manufacturing",
-      },
-      {
-        image: "assets/enhanced/vtol-propulsion-rig.jpg",
-        label: "Propulsion rig",
-        caption: "VTOL propulsion and structure integration rig",
-      },
-    ],
-  },
-  uav: {
-    views: {
-      twin: {
-        image: "assets/enhanced/magnumwing-top-blueprint.jpg",
-        alt: "Real top-view design structure of the fixed-wing cargo UAV",
-        status: "BODY BLUEPRINT / CARGO-02",
-      },
-      prototype: {
-        image: "assets/enhanced/fixedwing-field.jpg",
-        alt: "Physical fixed-wing UAV prepared on a field runway",
-        status: "REAL PROJECT IMAGE / CARGO-02",
-      },
-    },
-    kicker: "MAGNUM WINGS / HEAVY-LIFT CARGO UAV",
-    title: "25 kg & 100 kg Payload Platforms",
-    copy:
-      "Cargo-aircraft development spanning aerodynamic surfaces, topology-led structures, composite airframes, landing gear, payload packaging, and prototype-ready manufacturing definition.",
-    scope: [
-      "25 kg full airframe ownership",
-      "100 kg platform architecture",
-      "Landing gear validated to 3g cases",
-    ],
-    metrics: [
-      ["PAYLOAD", "25 / 100 KG"],
-      ["LANDING", "UP TO 3G"],
-      ["PARTS", "-20%"],
-    ],
-    proof: [
-      {
-        image: "assets/enhanced/fixedwing-field.jpg",
-        label: "Field airframe",
-        caption: "Fixed-wing UAV / field-ready prototype",
-      },
-      {
-        image: "assets/enhanced/structural-cad-wing.jpg",
-        label: "Wing structure",
-        caption: "Fixed-wing UAV / internal structural architecture",
-      },
-      {
-        image: "assets/enhanced/magnumwing-front-blueprint.jpg",
-        label: "Configuration",
-        caption: "Fixed-wing UAV / front configuration study",
-      },
-    ],
-  },
-  propulsion: {
-    views: {
-      twin: {
-        image: "assets/generated/propulsion-cutaway.jpg",
-        alt: "Exploded 3D cutaway visualization of a compact UAV jet propulsion system",
-        status: "CUTAWAY BLUEPRINT / AD-03",
-      },
-      prototype: {
-        image: "assets/enhanced/vtol-propulsion-rig.jpg",
-        alt: "Physical propulsion and aircraft integration test rig",
-        status: "REAL PROJECT IMAGE / AD-03",
-      },
-    },
-    kicker: "APOLLYON DYNAMICS / JET PROPULSION",
-    title: "Compact Propulsion Architecture",
-    copy:
-      "A founder-led R&D direction for compact turbine packaging: intake-to-nozzle flow, compressor and turbine staging, lightweight structures, and ground-test-oriented integration.",
-    scope: [
-      "Compact mechanical packaging",
-      "Compressor-to-nozzle architecture",
-      "Test-oriented subsystem integration",
-    ],
-    metrics: [
-      ["CORE", "TURBINE"],
-      ["VENTURE", "APOLLYON"],
-      ["PHASE", "R&D"],
-    ],
-    proof: [
-      {
-        image: "assets/enhanced/jet-vtol-cad.jpg",
-        label: "CAD packaging",
-        caption: "Propulsion-led VTOL / subsystem packaging study",
-      },
-      {
-        image: "assets/enhanced/vtol-propulsion-rig.jpg",
-        label: "Integration rig",
-        caption: "Propulsion and airframe integration rig",
-      },
-      {
-        image: "assets/enhanced/quad-uav-prototype.jpg",
-        label: "Airframe install",
-        caption: "Multirotor prototype / installed propulsion hardware",
-      },
-    ],
-  },
-  launch: {
-    views: {
-      twin: {
-        image: "assets/generated/catapult-launch-digital-twin.jpg",
-        alt: "Manufactured 3D visualization of the field UAV catapult launcher",
-        status: "LAUNCH BLUEPRINT / GS-04",
-      },
-      prototype: {
-        image: "assets/enhanced/catapult-launcher.jpg",
-        alt: "Physical mobile truss catapult system for fixed-wing UAV launch",
-        status: "REAL PROJECT IMAGE / GS-04",
-      },
-    },
-    kicker: "GROUND SYSTEMS / LAUNCH & LANDING",
-    title: "Catapult, Landing Gear & Field Systems",
-    copy:
-      "A mobile truss launcher, pressure hardware, field chassis, aircraft interface, and landing-system work shaped around deployment, maintainability, and real load paths.",
-    scope: [
-      "Mobile field-launch architecture",
-      "Aircraft-to-launcher interface",
-      "Landing gear load-path definition",
-    ],
-    metrics: [
-      ["SYSTEM", "CATAPULT"],
-      ["CHASSIS", "MOBILE"],
-      ["LANDING", "3G CASES"],
-    ],
-    proof: [
-      {
-        image: "assets/enhanced/catapult-launcher.jpg",
-        label: "Field launcher",
-        caption: "Mobile UAV catapult / supplied project photograph",
-      },
-      {
-        image: "assets/enhanced/fixedwing-field.jpg",
-        label: "Aircraft interface",
-        caption: "Fixed-wing UAV / field operations context",
-      },
-      {
-        image: "assets/enhanced/multi-uav-lab.jpg",
-        label: "Build environment",
-        caption: "UAV manufacturing and assembly environment",
-      },
-    ],
-  },
-};
-
+const programs = new Map();
+let programOrder = [];
 let lastScrollTop = window.scrollY;
 let lastScrollTime = performance.now();
 
@@ -689,67 +508,194 @@ document.querySelectorAll("[data-count]").forEach((element) => countObserver.obs
 const programImage = document.querySelector("#program-image");
 const twinViewer = document.querySelector(".twin-viewer");
 const viewerStatus = document.querySelector("#viewer-status");
+const programNav = document.querySelector("#program-nav");
+const programViewModes = document.querySelector("#viewer-modes");
+const programCycleBar = document.querySelector("#viewer-cycle-bar");
+const programWatermark = document.querySelector("#program-watermark");
+const programAngle = document.querySelector("#viewer-angle");
+const programState = document.querySelector("#program-state");
+const programSource = document.querySelector("#program-source");
 const programKicker = document.querySelector("#program-kicker");
 const programTitle = document.querySelector("#program-title");
 const programCopy = document.querySelector("#program-copy");
 const programScope = document.querySelector("#program-scope");
+const programMetrics = document.querySelector("#program-metrics");
+const programDataBasis = document.querySelector("#program-data-basis");
 const programProofList = document.querySelector("#program-proof-list");
-const programViewButtons = [...document.querySelectorAll("[data-program-view]")];
-const metricLabels = [
-  document.querySelector("#metric-one-label"),
-  document.querySelector("#metric-two-label"),
-  document.querySelector("#metric-three-label"),
-];
-const metricValues = [
-  document.querySelector("#metric-one-value"),
-  document.querySelector("#metric-two-value"),
-  document.querySelector("#metric-three-value"),
-];
-let currentProgram = "vtol";
-let currentProgramView = "prototype";
-let programTimer;
+let currentProgram = "";
+let currentProgramView = "";
+let programSwapTimer;
+let programCycleTimer;
+let programCyclePaused = false;
 
-const swapProgramImage = (view, viewKey) => {
-  window.clearTimeout(programTimer);
+const getCurrentProgram = () => programs.get(currentProgram);
+const getProgramView = (program, viewKey) =>
+  program?.views.find((view) => view.key === viewKey);
+
+const swapProgramImage = (program, view) => {
+  window.clearTimeout(programSwapTimer);
   programImage.classList.add("switching");
-  twinViewer.classList.toggle("prototype-active", viewKey === "prototype");
+  programWatermark.textContent = program.watermark;
+  programAngle.textContent = `${view.label.toUpperCase()} / ${program.index}`;
+  viewerStatus.textContent = `${view.label.toUpperCase()} VIEW / ${program.category}`;
 
-  programTimer = window.setTimeout(() => {
+  programSwapTimer = window.setTimeout(() => {
+    const revealImage = () => programImage.classList.remove("switching");
+    programImage.onload = revealImage;
+    programImage.onerror = () => {
+      revealImage();
+      viewerStatus.textContent = "VIEW UNAVAILABLE / CHECK PROJECT ASSET";
+    };
     programImage.src = view.image;
     programImage.alt = view.alt;
-    viewerStatus.textContent = view.status;
-    programImage.onload = () => programImage.classList.remove("switching");
-    if (programImage.complete) programImage.classList.remove("switching");
-  }, reducedMotion ? 0 : 190);
+    if (programImage.complete) window.requestAnimationFrame(revealImage);
+  }, reducedMotion ? 0 : 150);
+};
+
+const renderProgramNav = () => {
+  const tabs = programOrder.map((program, index) => {
+    const button = document.createElement("button");
+    const number = document.createElement("span");
+    const copy = document.createElement("span");
+    const title = document.createElement("strong");
+    const detail = document.createElement("small");
+
+    button.className = "program-tab";
+    button.type = "button";
+    button.role = "tab";
+    button.id = `program-tab-${program.id}`;
+    button.dataset.program = program.id;
+    button.setAttribute("aria-selected", "false");
+    button.setAttribute("aria-controls", "project-viewer");
+    button.tabIndex = index === 0 ? 0 : -1;
+    number.textContent = program.index;
+    title.textContent = program.navTitle;
+    detail.textContent = `${program.category} / ${program.navSubtitle}`;
+    copy.append(title, detail);
+    button.append(number, copy);
+    return button;
+  });
+  programNav.replaceChildren(...tabs);
+};
+
+const renderProgramViews = (program) => {
+  const buttons = program.views.map((view) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.dataset.programView = view.key;
+    button.setAttribute("aria-pressed", "false");
+    button.textContent = view.label;
+    return button;
+  });
+  programViewModes.replaceChildren(...buttons);
 };
 
 const renderProgramProof = (program) => {
-  programProofList.replaceChildren();
-  program.proof.forEach((item) => {
+  const buttons = program.views.map((view) => {
     const button = document.createElement("button");
     const image = document.createElement("img");
     const label = document.createElement("span");
+
     button.type = "button";
-    button.dataset.lightbox = item.image;
-    button.dataset.caption = item.caption;
-    button.setAttribute("aria-label", `Open ${item.caption}`);
-    image.src = item.image;
+    button.dataset.programView = view.key;
+    button.setAttribute("aria-label", `Show ${view.label.toLowerCase()} view of ${program.title}`);
+    image.src = view.image;
     image.alt = "";
     image.loading = "lazy";
-    label.textContent = item.label;
+    label.textContent = view.label;
     button.append(image, label);
-    programProofList.append(button);
+    return button;
   });
+  programProofList.replaceChildren(...buttons);
+};
+
+const renderProgramMetrics = (program) => {
+  const metrics = program.metrics.map((metric) => {
+    const wrapper = document.createElement("div");
+    const label = document.createElement("dt");
+    const value = document.createElement("dd");
+    label.textContent = metric.label;
+    value.textContent = metric.value;
+    wrapper.append(label, value);
+    return wrapper;
+  });
+  programMetrics.replaceChildren(...metrics);
+};
+
+const resetProgramCycleBar = () => {
+  programCycleBar.classList.remove("running");
+  void programCycleBar.offsetWidth;
+  if (!reducedMotion && !programCyclePaused && !document.hidden) {
+    programCycleBar.classList.add("running");
+  }
+};
+
+const stopProgramCycle = () => {
+  window.clearInterval(programCycleTimer);
+  programCycleTimer = undefined;
+  programCycleBar.classList.remove("running");
+};
+
+const setProgramView = (viewKey, { restart = true } = {}) => {
+  const program = getCurrentProgram();
+  const view = getProgramView(program, viewKey);
+  if (!program || !view) return;
+
+  currentProgramView = view.key;
+  programViewModes.querySelectorAll("[data-program-view]").forEach((button) => {
+    const active = button.dataset.programView === view.key;
+    button.classList.toggle("active", active);
+    button.setAttribute("aria-pressed", String(active));
+  });
+  programProofList.querySelectorAll("[data-program-view]").forEach((button) => {
+    button.classList.toggle("active", button.dataset.programView === view.key);
+  });
+  swapProgramImage(program, view);
+
+  const currentIndex = program.views.findIndex((item) => item.key === view.key);
+  const nextView = program.views[(currentIndex + 1) % program.views.length];
+  if (nextView) {
+    const preload = new Image();
+    preload.src = nextView.image;
+  }
+
+  if (restart) restartProgramCycle();
+};
+
+const advanceProgramView = () => {
+  const program = getCurrentProgram();
+  if (!program || program.views.length < 2) return;
+  const currentIndex = Math.max(
+    0,
+    program.views.findIndex((view) => view.key === currentProgramView)
+  );
+  const nextView = program.views[(currentIndex + 1) % program.views.length];
+  setProgramView(nextView.key, { restart: false });
+  resetProgramCycleBar();
+};
+
+const restartProgramCycle = () => {
+  stopProgramCycle();
+  if (reducedMotion || programCyclePaused || document.hidden) return;
+  const program = getCurrentProgram();
+  if (!program || program.views.length < 2) return;
+  resetProgramCycleBar();
+  programCycleTimer = window.setInterval(advanceProgramView, 3000);
 };
 
 const renderProgram = (key, initial = false) => {
-  if (!programs[key] || (!initial && key === currentProgram)) return;
-  const program = programs[key];
+  const program = programs.get(key);
+  if (!program || (!initial && key === currentProgram)) return;
+
   currentProgram = key;
-  currentProgramView = "prototype";
   programKicker.textContent = program.kicker;
   programTitle.textContent = program.title;
-  programCopy.textContent = program.copy;
+  programCopy.textContent = program.description;
+  programState.textContent = program.status;
+  programState.dataset.state = program.status.toLowerCase().replaceAll(" ", "-");
+  programSource.href = program.reference.url;
+  programSource.textContent = `${program.reference.label} ↗`;
+  programDataBasis.textContent = program.dataBasis;
   programScope.replaceChildren(
     ...program.scope.map((item) => {
       const entry = document.createElement("li");
@@ -757,39 +703,129 @@ const renderProgram = (key, initial = false) => {
       return entry;
     })
   );
-  program.metrics.forEach(([label, value], index) => {
-    metricLabels[index].textContent = label;
-    metricValues[index].textContent = value;
-  });
-  programViewButtons.forEach((button) => {
-    button.classList.toggle("active", button.dataset.programView === "prototype");
-  });
+
+  renderProgramMetrics(program);
+  renderProgramViews(program);
   renderProgramProof(program);
-  swapProgramImage(program.views.prototype, "prototype");
+
+  programNav.querySelectorAll(".program-tab").forEach((tab) => {
+    const active = tab.dataset.program === key;
+    tab.classList.toggle("active", active);
+    tab.setAttribute("aria-selected", String(active));
+    tab.tabIndex = active ? 0 : -1;
+    if (active) twinViewer.setAttribute("aria-labelledby", tab.id);
+  });
+
+  const defaultView =
+    program.views.find((view) => view.key === "perspective") || program.views[0];
+  setProgramView(defaultView.key);
 };
 
-document.querySelectorAll(".program-tab").forEach((tab) => {
-  tab.addEventListener("click", () => {
-    document.querySelectorAll(".program-tab").forEach((item) => {
-      const active = item === tab;
-      item.classList.toggle("active", active);
-      item.setAttribute("aria-selected", String(active));
-    });
-    renderProgram(tab.dataset.program);
-  });
+const loadProgramCatalog = async () => {
+  try {
+    const indexResponse = await fetch("assets/projects/index.json");
+    if (!indexResponse.ok) throw new Error(`Catalog request failed: ${indexResponse.status}`);
+    const metadataPaths = await indexResponse.json();
+    const records = await Promise.all(
+      metadataPaths.map(async (metadataPath) => {
+        const metadataUrl = new URL(`assets/projects/${metadataPath}`, window.location.href);
+        const response = await fetch(metadataUrl);
+        if (!response.ok) throw new Error(`Project request failed: ${response.status}`);
+        const record = await response.json();
+        record.views = record.views.map((view) => ({
+          ...view,
+          image: new URL(view.image, metadataUrl).href,
+        }));
+        return record;
+      })
+    );
+
+    programs.clear();
+    records.forEach((record) => programs.set(record.id, record));
+    programOrder = records;
+    renderProgramNav();
+    renderProgram(programOrder[0].id, true);
+  } catch (error) {
+    const message = document.createElement("p");
+    message.className = "catalog-loading catalog-error";
+    message.textContent = "The project archive could not be loaded.";
+    programNav.replaceChildren(message);
+    viewerStatus.textContent = "ARCHIVE UNAVAILABLE";
+    programCopy.textContent = "Refresh the page from the local web server to reload the project records.";
+    console.error(error);
+  }
+};
+
+programNav.addEventListener("click", (event) => {
+  const tab = event.target instanceof Element ? event.target.closest(".program-tab") : null;
+  if (!tab) return;
+  renderProgram(tab.dataset.program);
 });
 
-programViewButtons.forEach((button) => {
-  button.addEventListener("click", () => {
-    const viewKey = button.dataset.programView;
-    if (!programs[currentProgram].views[viewKey] || viewKey === currentProgramView) return;
-    currentProgramView = viewKey;
-    programViewButtons.forEach((item) => item.classList.toggle("active", item === button));
-    swapProgramImage(programs[currentProgram].views[viewKey], viewKey);
-  });
+programNav.addEventListener("keydown", (event) => {
+  const keys = ["ArrowDown", "ArrowRight", "ArrowUp", "ArrowLeft", "Home", "End"];
+  if (!keys.includes(event.key) || !programOrder.length) return;
+  event.preventDefault();
+  const currentIndex = Math.max(
+    0,
+    programOrder.findIndex((program) => program.id === currentProgram)
+  );
+  let nextIndex = currentIndex;
+  if (event.key === "ArrowDown" || event.key === "ArrowRight") {
+    nextIndex = (currentIndex + 1) % programOrder.length;
+  } else if (event.key === "ArrowUp" || event.key === "ArrowLeft") {
+    nextIndex = (currentIndex - 1 + programOrder.length) % programOrder.length;
+  } else if (event.key === "Home") {
+    nextIndex = 0;
+  } else if (event.key === "End") {
+    nextIndex = programOrder.length - 1;
+  }
+  const nextProgram = programOrder[nextIndex];
+  renderProgram(nextProgram.id);
+  document.querySelector(`[data-program="${nextProgram.id}"]`)?.focus();
 });
 
-renderProgram("vtol", true);
+programViewModes.addEventListener("click", (event) => {
+  const button =
+    event.target instanceof Element ? event.target.closest("[data-program-view]") : null;
+  if (button) setProgramView(button.dataset.programView);
+});
+
+programProofList.addEventListener("click", (event) => {
+  const button =
+    event.target instanceof Element ? event.target.closest("[data-program-view]") : null;
+  if (button) setProgramView(button.dataset.programView);
+});
+
+twinViewer.addEventListener("pointerenter", (event) => {
+  if (event.pointerType !== "mouse") return;
+  programCyclePaused = true;
+  stopProgramCycle();
+});
+
+twinViewer.addEventListener("pointerleave", (event) => {
+  if (event.pointerType !== "mouse") return;
+  programCyclePaused = false;
+  restartProgramCycle();
+});
+
+twinViewer.addEventListener("focusin", () => {
+  programCyclePaused = true;
+  stopProgramCycle();
+});
+
+twinViewer.addEventListener("focusout", (event) => {
+  if (twinViewer.contains(event.relatedTarget)) return;
+  programCyclePaused = false;
+  restartProgramCycle();
+});
+
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden) stopProgramCycle();
+  else restartProgramCycle();
+});
+
+loadProgramCatalog();
 
 const tiltViewer = twinViewer;
 if (tiltViewer && !reducedMotion) {
@@ -817,9 +853,10 @@ const openImageDialog = (src, alt, caption) => {
 };
 
 document.querySelector(".expand-view").addEventListener("click", () => {
-  const program = programs[currentProgram];
-  const view = program.views[currentProgramView];
-  openImageDialog(view.image, view.alt, view.status);
+  const program = getCurrentProgram();
+  const view = getProgramView(program, currentProgramView);
+  if (!program || !view) return;
+  openImageDialog(view.image, view.alt, `${program.title} / ${view.label} view`);
 });
 
 document.addEventListener("click", (event) => {
@@ -838,20 +875,313 @@ dialog.addEventListener("click", (event) => {
   if (event.target === dialog) dialog.close();
 });
 
-const flightVideoObserver = new IntersectionObserver(
-  (entries) => {
-    entries.forEach((entry) => {
-      const video = entry.target;
-      if (entry.isIntersecting && !reducedMotion) {
-        video.play().catch(() => {});
-      } else {
-        video.pause();
-      }
-    });
+const flightProofRecords = [
+  {
+    index: "01",
+    title: "Personal-mobility VTOL demonstrator",
+    kicker: "PERSONAL MOBILITY / OUTDOOR FLIGHT",
+    label: "FLIGHT DEMONSTRATION / SUPPLIED FOOTAGE",
+    duration: "01:17",
+    video: "assets/showcase/flight-proof/personal-mobility-vtol.mp4",
+    poster: "assets/showcase/flight-proof/personal-mobility-vtol-poster.jpg",
+    description:
+      "Full-scale distributed-lift vehicle captured in sustained outdoor hover and translation, documenting the integrated cabin, rotor frame, landing structure, and flight-control system.",
+    facts: [
+      ["EVIDENCE", "SUSTAINED FLIGHT"],
+      ["SYSTEM", "DISTRIBUTED LIFT"],
+      ["ENVIRONMENT", "OUTDOOR FIELD"],
+    ],
   },
-  { threshold: 0.45 }
+  {
+    index: "02",
+    title: "Aerial mission-feed demonstration",
+    kicker: "MISSION SYSTEM / LIVE AERIAL FEED",
+    label: "OPERATIONAL VIEW / SUPPLIED FOOTAGE",
+    duration: "01:40",
+    video: "assets/showcase/flight-proof/aerial-mission-feed.mp4",
+    poster: "assets/showcase/flight-proof/aerial-mission-feed-poster.jpg",
+    description:
+      "Recorded aircraft-view telemetry over mountainous terrain demonstrates live visual awareness, route coverage, and the operational perspective delivered by the airborne platform.",
+    facts: [
+      ["EVIDENCE", "AIRBORNE FEED"],
+      ["MISSION", "AREA OBSERVATION"],
+      ["TERRAIN", "MOUNTAINOUS"],
+    ],
+  },
+  {
+    index: "03",
+    title: "Fixed-wing flight validation",
+    kicker: "FIXED WING / AIRBORNE HANDLING",
+    label: "FLIGHT VALIDATION / SUPPLIED FOOTAGE",
+    duration: "00:06",
+    video: "assets/showcase/flight-proof/fixed-wing-flight.mp4",
+    poster: "assets/showcase/flight-proof/fixed-wing-flight-poster.jpg",
+    description:
+      "A compact fixed-wing aircraft is captured in a banked field pass, providing direct visual evidence of airborne stability, control response, and practical outdoor operation.",
+    facts: [
+      ["EVIDENCE", "AIRBORNE PASS"],
+      ["AIRFRAME", "FIXED WING"],
+      ["FOCUS", "HANDLING"],
+    ],
+  },
+  {
+    index: "04",
+    title: "Fixed-wing field flight sequence",
+    kicker: "FIELD OPERATIONS / FIXED-WING SORTIE",
+    label: "FIELD VALIDATION / SUPPLIED FOOTAGE",
+    duration: "00:14",
+    video: "assets/showcase/flight-proof/field-launch-validation.mp4",
+    poster: "assets/showcase/flight-proof/field-launch-validation-poster.jpg",
+    description:
+      "Runway-side footage follows a fixed-wing sortie in a real operating environment, connecting ground preparation and launch conditions with the aircraft's airborne phase.",
+    facts: [
+      ["EVIDENCE", "FIELD SORTIE"],
+      ["SYSTEM", "FIXED WING"],
+      ["LOCATION", "AIRFIELD"],
+    ],
+  },
+  {
+    index: "05",
+    title: "Mobile UAV catapult hardware",
+    kicker: "GROUND SYSTEM / ASSISTED LAUNCH",
+    label: "LAUNCH HARDWARE / SUPPLIED FOOTAGE",
+    duration: "00:16",
+    video: "assets/showcase/flight-proof/mobile-catapult.mp4",
+    poster: "assets/showcase/flight-proof/mobile-catapult-poster.jpg",
+    description:
+      "A trailer-mounted truss launcher is shown assembled in the field, documenting the adjustable rail, mobile chassis, support structure, and aircraft interface used for assisted launch.",
+    facts: [
+      ["EVIDENCE", "FIELD HARDWARE"],
+      ["SYSTEM", "UAV CATAPULT"],
+      ["FORMAT", "MOBILE CHASSIS"],
+    ],
+  },
+  {
+    index: "06",
+    title: "Propulsion integration rig",
+    kicker: "PROPULSION R&D / BENCH INTEGRATION",
+    label: "BENCH TEST / SUPPLIED FOOTAGE",
+    duration: "00:30",
+    video: "assets/showcase/flight-proof/propulsion-rig.mp4",
+    poster: "assets/showcase/flight-proof/propulsion-rig-poster.jpg",
+    description:
+      "Workshop footage exposes a compact propulsion assembly, wiring, support frame, and adjacent airframe structure during hands-on subsystem integration and bench evaluation.",
+    facts: [
+      ["EVIDENCE", "BENCH ASSEMBLY"],
+      ["SYSTEM", "PROPULSION"],
+      ["PHASE", "INTEGRATION"],
+    ],
+  },
+  {
+    index: "07",
+    title: "Solar-panel cleaning robot",
+    kicker: "FIELD ROBOTICS / PV MAINTENANCE",
+    label: "ROBOTIC OPERATION / SUPPLIED FOOTAGE",
+    duration: "01:23",
+    video: "assets/showcase/flight-proof/solar-panel-cleaning.mp4",
+    poster: "assets/showcase/flight-proof/solar-panel-cleaning-poster.jpg",
+    description:
+      "The tracked cleaning platform traverses photovoltaic modules while the brush system removes surface debris, showing mobility, edge transition, and cleaning action in an outdoor array.",
+    facts: [
+      ["EVIDENCE", "LIVE OPERATION"],
+      ["SYSTEM", "CLEANING ROBOT"],
+      ["SURFACE", "PV ARRAY"],
+    ],
+  },
+  {
+    index: "08",
+    title: "Multirotor flight test",
+    kicker: "MULTIROTOR / LOW-ALTITUDE CONTROL",
+    label: "FLIGHT TEST / SUPPLIED FOOTAGE",
+    duration: "00:45",
+    video: "assets/showcase/flight-proof/multirotor-flight.mp4",
+    poster: "assets/showcase/flight-proof/multirotor-flight-poster.jpg",
+    description:
+      "A multirotor prototype is exercised close to the field, recording take-off, hover, translation, and attitude response during practical low-altitude flight testing.",
+    facts: [
+      ["EVIDENCE", "CONTROLLED FLIGHT"],
+      ["AIRFRAME", "MULTIROTOR"],
+      ["FOCUS", "ATTITUDE RESPONSE"],
+    ],
+  },
+  {
+    index: "09",
+    title: "Lighting and mechanism integration",
+    kicker: "MECHATRONICS / FUNCTIONAL CHECK",
+    label: "MECHANISM TEST / SUPPLIED FOOTAGE",
+    duration: "00:12",
+    video: "assets/showcase/flight-proof/mechanism-lighting-test.mp4",
+    poster: "assets/showcase/flight-proof/mechanism-lighting-test-poster.jpg",
+    description:
+      "A compact enclosed prototype demonstrates integrated lighting, actuation, and mechanical movement during a close-range functional check of the assembled device.",
+    facts: [
+      ["EVIDENCE", "FUNCTION CHECK"],
+      ["SYSTEM", "MECHATRONIC"],
+      ["FOCUS", "LIGHT + MOTION"],
+    ],
+  },
+  {
+    index: "10",
+    title: "CAD-to-hardware controller prototype",
+    kicker: "PRODUCT DEVELOPMENT / PHYSICAL PROTOTYPE",
+    label: "CAD TO HARDWARE / SUPPLIED FOOTAGE",
+    duration: "00:08",
+    video: "assets/showcase/flight-proof/cad-controller-prototype.mp4",
+    poster: "assets/showcase/flight-proof/cad-controller-prototype-poster.jpg",
+    description:
+      "The physical controller assembly is shown against its CAD model, making the transition from digital packaging and interface design to a working handheld prototype directly visible.",
+    facts: [
+      ["EVIDENCE", "WORKING PROTOTYPE"],
+      ["WORKFLOW", "CAD TO BUILD"],
+      ["FORMAT", "HANDHELD"],
+    ],
+  },
+  {
+    index: "11",
+    title: "Portable mechatronic prototype",
+    kicker: "SYSTEM INTEGRATION / PORTABLE RIG",
+    label: "HARDWARE DEMONSTRATION / SUPPLIED FOOTAGE",
+    duration: "00:10",
+    video: "assets/showcase/flight-proof/portable-mechatronic-rig.mp4",
+    poster: "assets/showcase/flight-proof/portable-mechatronic-rig-poster.jpg",
+    description:
+      "A compact portable rig brings structure, motors, wiring, sensors, and radio control into one accessible assembly for field handling and integrated subsystem checks.",
+    facts: [
+      ["EVIDENCE", "ASSEMBLED RIG"],
+      ["SYSTEM", "MECHATRONIC"],
+      ["FOCUS", "INTEGRATION"],
+    ],
+  },
+];
+
+const flightProofVideo = document.querySelector("#flight-proof-video");
+const flightProofSource = document.querySelector("#flight-proof-source");
+const flightProofRail = document.querySelector("#flight-proof-rail");
+const flightProofStageLabel = document.querySelector("#flight-proof-stage-label");
+const flightProofStageCount = document.querySelector("#flight-proof-stage-count");
+const flightProofIndex = document.querySelector("#flight-proof-index");
+const flightProofDuration = document.querySelector("#flight-proof-duration");
+const flightProofKicker = document.querySelector("#flight-proof-kicker");
+const flightProofName = document.querySelector("#flight-proof-name");
+const flightProofDescription = document.querySelector("#flight-proof-description");
+const flightProofFacts = document.querySelector("#flight-proof-facts");
+const flightProofPrevious = document.querySelector("#flight-proof-previous");
+const flightProofNext = document.querySelector("#flight-proof-next");
+let currentFlightProof = 0;
+let flightProofVisible = false;
+
+const renderFlightProofRail = () => {
+  const records = flightProofRecords.map((record, recordIndex) => {
+    const button = document.createElement("button");
+    const image = document.createElement("img");
+    const copy = document.createElement("span");
+    const meta = document.createElement("small");
+    const title = document.createElement("strong");
+
+    button.type = "button";
+    button.className = "flight-proof-record";
+    button.id = `flight-proof-tab-${record.index}`;
+    button.role = "tab";
+    button.dataset.flightProof = String(recordIndex);
+    button.setAttribute("aria-selected", String(recordIndex === 0));
+    button.setAttribute("aria-controls", "flight-proof-video");
+    button.tabIndex = recordIndex === 0 ? 0 : -1;
+    image.src = record.poster;
+    image.alt = "";
+    image.loading = "lazy";
+    meta.textContent = `${record.index} / ${record.duration}`;
+    title.textContent = record.title;
+    copy.append(meta, title);
+    button.append(image, copy);
+    return button;
+  });
+  flightProofRail.replaceChildren(...records);
+};
+
+const renderFlightProof = (recordIndex, { autoplay = true, revealRecord = true } = {}) => {
+  const normalizedIndex =
+    (recordIndex + flightProofRecords.length) % flightProofRecords.length;
+  const record = flightProofRecords[normalizedIndex];
+  currentFlightProof = normalizedIndex;
+
+  flightProofVideo.pause();
+  flightProofVideo.poster = record.poster;
+  flightProofSource.src = record.video;
+  flightProofVideo.load();
+  flightProofStageLabel.textContent = record.label;
+  flightProofStageCount.textContent = `${record.index} / ${String(flightProofRecords.length).padStart(2, "0")}`;
+  flightProofIndex.textContent = record.index;
+  flightProofDuration.textContent = record.duration;
+  flightProofKicker.textContent = record.kicker;
+  flightProofName.textContent = record.title;
+  flightProofDescription.textContent = record.description;
+  flightProofFacts.replaceChildren(
+    ...record.facts.map(([labelText, valueText]) => {
+      const wrapper = document.createElement("div");
+      const label = document.createElement("dt");
+      const value = document.createElement("dd");
+      label.textContent = labelText;
+      value.textContent = valueText;
+      wrapper.append(label, value);
+      return wrapper;
+    })
+  );
+
+  flightProofRail.querySelectorAll(".flight-proof-record").forEach((button) => {
+    const active = Number(button.dataset.flightProof) === normalizedIndex;
+    button.classList.toggle("active", active);
+    button.setAttribute("aria-selected", String(active));
+    button.tabIndex = active ? 0 : -1;
+    if (active) {
+      flightProofVideo.setAttribute("aria-labelledby", button.id);
+      if (revealRecord) {
+        button.scrollIntoView({ behavior: reducedMotion ? "auto" : "smooth", block: "nearest", inline: "nearest" });
+      }
+    }
+  });
+
+  if (autoplay && flightProofVisible && !reducedMotion) {
+    flightProofVideo.play().catch(() => {});
+  }
+};
+
+renderFlightProofRail();
+renderFlightProof(0, { autoplay: false, revealRecord: false });
+
+flightProofRail.addEventListener("click", (event) => {
+  const button =
+    event.target instanceof Element ? event.target.closest("[data-flight-proof]") : null;
+  if (!button) return;
+  renderFlightProof(Number(button.dataset.flightProof));
+});
+
+flightProofRail.addEventListener("keydown", (event) => {
+  if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
+  event.preventDefault();
+  let nextIndex = currentFlightProof;
+  if (event.key === "ArrowLeft") nextIndex -= 1;
+  if (event.key === "ArrowRight") nextIndex += 1;
+  if (event.key === "Home") nextIndex = 0;
+  if (event.key === "End") nextIndex = flightProofRecords.length - 1;
+  renderFlightProof(nextIndex);
+  flightProofRail.querySelector(".flight-proof-record.active")?.focus();
+});
+
+flightProofPrevious.addEventListener("click", () => renderFlightProof(currentFlightProof - 1));
+flightProofNext.addEventListener("click", () => renderFlightProof(currentFlightProof + 1));
+
+const flightVideoObserver = new IntersectionObserver(
+  ([entry]) => {
+    flightProofVisible = entry.isIntersecting;
+    if (entry.isIntersecting && !reducedMotion) {
+      flightProofVideo.play().catch(() => {});
+    } else {
+      flightProofVideo.pause();
+    }
+  },
+  { threshold: 0.42 }
 );
-document.querySelectorAll(".flight-reel video").forEach((video) => flightVideoObserver.observe(video));
+flightVideoObserver.observe(flightProofVideo);
 
 if (!reducedMotion) {
   hero.addEventListener("pointermove", (event) => {

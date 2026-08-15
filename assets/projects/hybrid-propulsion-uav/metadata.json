@@ -1,0 +1,28 @@
+{
+  "id": "hybrid-propulsion-uav",
+  "index": "13",
+  "category": "PROPULSION R&D",
+  "status": "CONCEPT STUDY",
+  "navTitle": "Hybrid UAV Testbed",
+  "navSubtitle": "Modular propulsion rig",
+  "kicker": "HYBRID PROPULSION / MODULAR UAV TESTBED",
+  "title": "Hybrid-Propulsion UAV Testbed",
+  "watermark": "NEERAJ / R&D-13",
+  "description": "A skeletal UAV testbed designed to expose propulsion, energy-storage, control, and payload interfaces for rapid access. The open tubular structure supports subsystem iteration and ground testing before aerodynamic fairings or production packaging are finalized.",
+  "scope": ["Accessible propulsion integration", "Modular energy-system packaging", "Ground-test-oriented airframe"],
+  "metrics": [
+    {"label": "LENGTH", "value": "1200 mm"},
+    {"label": "MTOW", "value": "8 kg"},
+    {"label": "PAYLOAD", "value": "2.5 kg"},
+    {"label": "ENDURANCE", "value": "60 min"}
+  ],
+  "views": [
+    {"key": "perspective", "label": "Perspective", "image": "views/perspective.jpg", "alt": "Perspective view of the hybrid-propulsion UAV testbed concept"},
+    {"key": "top", "label": "Top", "image": "views/top.jpg", "alt": "Top view of the hybrid-propulsion UAV testbed concept"},
+    {"key": "front", "label": "Front", "image": "views/front.jpg", "alt": "Front view of the hybrid-propulsion UAV testbed concept"},
+    {"key": "side", "label": "Side", "image": "views/side.jpg", "alt": "Side view of the hybrid-propulsion UAV testbed concept"}
+  ],
+  "sourceBoard": "../../new_updated /ChatGPT Image Aug 7, 2026, 07_29_02 PM.png",
+  "dataBasis": "Performance and dimensions are transcribed from the supplied concept sheet and are not independently verified.",
+  "reference": {"label": "NASA compound-wing VTOL small-UAS research", "url": "https://ntrs.nasa.gov/citations/20160005926"}
+}

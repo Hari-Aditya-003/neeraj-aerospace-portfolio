@@ -1,0 +1,28 @@
+{
+  "id": "carbon-flying-wing",
+  "index": "05",
+  "category": "FIXED WING",
+  "status": "CONCEPT STUDY",
+  "navTitle": "Carbon Flying Wing",
+  "navSubtitle": "Tailless composite study",
+  "kicker": "TAILLESS AIRFRAME / COMPOSITE FLYING WING",
+  "title": "Carbon Flying-Wing UAV",
+  "watermark": "NEERAJ / WING-05",
+  "description": "A tailless flying-wing study focused on low-part-count structure, internal volume, and a clean aerodynamic planform. Control and stability would be carried through sweep, twist, center-of-gravity placement, and trailing-edge control surfaces.",
+  "scope": ["Tailless stability study", "Composite shell architecture", "Internal payload packaging"],
+  "metrics": [
+    {"label": "SPAN", "value": "3594 mm"},
+    {"label": "MTOW", "value": "25.76 kg"},
+    {"label": "SPEED", "value": "80 km/h"},
+    {"label": "ENDURANCE", "value": "100 min"}
+  ],
+  "views": [
+    {"key": "perspective", "label": "Perspective", "image": "views/perspective.jpg", "alt": "Perspective view of the carbon flying-wing UAV concept"},
+    {"key": "top", "label": "Top", "image": "views/top.jpg", "alt": "Top view of the carbon flying-wing UAV concept"},
+    {"key": "front", "label": "Front", "image": "views/front.jpg", "alt": "Front view of the carbon flying-wing UAV concept"},
+    {"key": "side", "label": "Side", "image": "views/side.jpg", "alt": "Side view of the carbon flying-wing UAV concept"}
+  ],
+  "sourceBoard": "../../new_updated /ChatGPT Image Aug 7, 2026, 06_02_55 PM.png",
+  "dataBasis": "Performance and dimensions are transcribed from the supplied concept sheet and are not independently verified.",
+  "reference": {"label": "NASA flying-wing design analysis", "url": "https://ntrs.nasa.gov/citations/19940020116"}
+}

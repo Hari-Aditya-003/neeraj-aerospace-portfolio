@@ -1,0 +1,28 @@
+{
+  "id": "black-blended-uav",
+  "index": "01",
+  "category": "FIXED WING",
+  "status": "CONCEPT STUDY",
+  "navTitle": "Blended UAV",
+  "navSubtitle": "Compact delta airframe",
+  "kicker": "BLENDED PLANFORM / COMPACT HIGH-SPEED UAV",
+  "title": "Compact Blended-Wing UAV",
+  "watermark": "NEERAJ / UAV-01",
+  "description": "A compact blended-planform UAV study built around a central propulsion body, an integrated payload bay, and a low-profile delta outline. The supplied sheet targets a 1 kg payload, 120 km/h maximum speed, and up to 60 minutes of endurance.",
+  "scope": ["Blended wing-body packaging", "Compact payload integration", "High-speed mission configuration"],
+  "metrics": [
+    {"label": "SPAN", "value": "700 mm"},
+    {"label": "MTOW", "value": "3.50 kg"},
+    {"label": "PAYLOAD", "value": "1 kg"},
+    {"label": "TARGET", "value": "120 km/h"}
+  ],
+  "views": [
+    {"key": "perspective", "label": "Perspective", "image": "views/perspective.jpg", "alt": "Perspective view of the compact black blended-wing UAV concept"},
+    {"key": "top", "label": "Top", "image": "views/top.jpg", "alt": "Top view of the compact black blended-wing UAV concept"},
+    {"key": "front", "label": "Front", "image": "views/front.jpg", "alt": "Front view of the compact black blended-wing UAV concept"},
+    {"key": "side", "label": "Side", "image": "views/side.jpg", "alt": "Side view of the compact black blended-wing UAV concept"}
+  ],
+  "sourceBoard": "../../new_updated /Black UAV Technical Specification Sheet.png",
+  "dataBasis": "Performance and dimensions are transcribed from the supplied concept sheet and are not independently verified.",
+  "reference": {"label": "NASA flying-wing design research", "url": "https://ntrs.nasa.gov/citations/19940020116"}
+}

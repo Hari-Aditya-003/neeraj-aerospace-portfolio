@@ -1,0 +1,15 @@
+[
+  "black-blended-uav/metadata.json",
+  "solarcleano-f1a/metadata.json",
+  "long-endurance-fixed-wing/metadata.json",
+  "quad-lift-fuselage/metadata.json",
+  "carbon-flying-wing/metadata.json",
+  "carbon-fixed-wing/metadata.json",
+  "heavy-lift-octocopter/metadata.json",
+  "lift-cruise-cabin-vtol/metadata.json",
+  "compact-survey-quad/metadata.json",
+  "passenger-quad-vtol/metadata.json",
+  "mobile-uav-catapult/metadata.json",
+  "passenger-octocopter-vtol/metadata.json",
+  "hybrid-propulsion-uav/metadata.json"
+]

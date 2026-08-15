@@ -1,0 +1,28 @@
+{
+  "id": "long-endurance-fixed-wing",
+  "index": "03",
+  "category": "FIXED WING",
+  "status": "CONCEPT STUDY",
+  "navTitle": "Endurance UAV",
+  "navSubtitle": "High-aspect-ratio wing",
+  "kicker": "LONG ENDURANCE / CONVENTIONAL FIXED-WING UAV",
+  "title": "Long-Endurance Fixed-Wing Platform",
+  "watermark": "NEERAJ / UAV-03",
+  "description": "A conventional fixed-wing UAV study using a high-aspect-ratio wing, tractor propulsion, and a clean central fuselage for efficient cruise and payload packaging. The supplied board targets a 25.76 kg MTOW and up to 100 minutes of endurance.",
+  "scope": ["Efficient cruise configuration", "Modular fuselage payload bay", "Field-operable fixed-wing layout"],
+  "metrics": [
+    {"label": "SPAN", "value": "3594 mm"},
+    {"label": "MTOW", "value": "25.76 kg"},
+    {"label": "SPEED", "value": "80 km/h"},
+    {"label": "ENDURANCE", "value": "100 min"}
+  ],
+  "views": [
+    {"key": "top", "label": "Top", "image": "views/top.jpg", "alt": "Top view of the long-endurance fixed-wing UAV concept"},
+    {"key": "front", "label": "Front", "image": "views/front.jpg", "alt": "Front view of the long-endurance fixed-wing UAV concept"},
+    {"key": "side", "label": "Side", "image": "views/side.jpg", "alt": "Side view of the long-endurance fixed-wing UAV concept"},
+    {"key": "rear", "label": "Rear", "image": "views/rear.jpg", "alt": "Rear view of the long-endurance fixed-wing UAV concept"}
+  ],
+  "sourceBoard": "../../new_updated /ChatGPT Image Aug 7, 2026, 05_48_07 PM.png",
+  "dataBasis": "Performance and dimensions are transcribed from the supplied concept sheet and are not independently verified.",
+  "reference": {"label": "FAA delivery-drone configuration overview", "url": "https://www.faa.gov/uas/advanced_operations/package_delivery_drone"}
+}

@@ -1,0 +1,28 @@
+{
+  "id": "heavy-lift-octocopter",
+  "index": "07",
+  "category": "MULTIROTOR",
+  "status": "CONCEPT STUDY",
+  "navTitle": "Heavy-Lift Octocopter",
+  "navSubtitle": "15 kg payload target",
+  "kicker": "HEAVY LIFT / EIGHT-MOTOR MULTIROTOR",
+  "title": "Heavy-Lift Octocopter Platform",
+  "watermark": "NEERAJ / LIFT-07",
+  "description": "An eight-motor heavy-lift platform arranged around a rigid circular frame and central payload zone. The supplied sheet targets a 15 kg payload, with motor redundancy and distributed thrust suited to lifting and specialist field missions.",
+  "scope": ["Eight-motor distributed thrust", "Central heavy-payload interface", "Redundant multirotor architecture"],
+  "metrics": [
+    {"label": "DIAMETER", "value": "3500 mm"},
+    {"label": "MTOW", "value": "45 kg"},
+    {"label": "PAYLOAD", "value": "15 kg"},
+    {"label": "ENDURANCE", "value": "45 min"}
+  ],
+  "views": [
+    {"key": "perspective", "label": "Perspective", "image": "views/perspective.jpg", "alt": "Perspective view of the heavy-lift octocopter concept"},
+    {"key": "top", "label": "Top", "image": "views/top.jpg", "alt": "Top view of the heavy-lift octocopter concept"},
+    {"key": "front", "label": "Front", "image": "views/front.jpg", "alt": "Front view of the heavy-lift octocopter concept"},
+    {"key": "side", "label": "Side", "image": "views/side.jpg", "alt": "Side view of the heavy-lift octocopter concept"}
+  ],
+  "sourceBoard": "../../new_updated /ChatGPT Image Aug 7, 2026, 06_19_56 PM.png",
+  "dataBasis": "Performance and dimensions are transcribed from the supplied concept sheet and are not independently verified.",
+  "reference": {"label": "NASA octocopter power and battery study", "url": "https://ntrs.nasa.gov/api/citations/20230012868/downloads/NASA-TM-20230012868.pdf"}
+}

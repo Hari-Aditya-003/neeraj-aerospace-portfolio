@@ -1,0 +1,28 @@
+{
+  "id": "lift-cruise-cabin-vtol",
+  "index": "08",
+  "category": "ADVANCED AIR MOBILITY",
+  "status": "CONCEPT STUDY",
+  "navTitle": "Lift + Cruise Cabin",
+  "navSubtitle": "Distributed electric VTOL",
+  "kicker": "LIFT + CRUISE / CABIN VTOL ARCHITECTURE",
+  "title": "Lift-and-Cruise Cabin eVTOL",
+  "watermark": "NEERAJ / AAM-08",
+  "description": "A cabin eVTOL study that separates vertical-lift rotors from forward-flight propulsion. This lift-and-cruise arrangement allows each propulsor group to be optimized around a distinct flight phase while preserving a conventional wing for cruise.",
+  "scope": ["Separated lift and cruise propulsion", "Cabin and occupant packaging", "Transition-flight architecture"],
+  "metrics": [
+    {"label": "SPAN", "value": "8600 mm"},
+    {"label": "MTOW", "value": "300 kg"},
+    {"label": "PAYLOAD", "value": "150 kg"},
+    {"label": "TARGET", "value": "100 km/h"}
+  ],
+  "views": [
+    {"key": "perspective", "label": "Perspective", "image": "views/perspective.jpg", "alt": "Perspective view of the lift-and-cruise cabin eVTOL concept"},
+    {"key": "top", "label": "Top", "image": "views/top.jpg", "alt": "Top view of the lift-and-cruise cabin eVTOL concept"},
+    {"key": "front", "label": "Front", "image": "views/front.jpg", "alt": "Front view of the lift-and-cruise cabin eVTOL concept"},
+    {"key": "side", "label": "Side", "image": "views/side.jpg", "alt": "Side view of the lift-and-cruise cabin eVTOL concept"}
+  ],
+  "sourceBoard": "../../new_updated /ChatGPT Image Aug 7, 2026, 06_21_46 PM.png",
+  "dataBasis": "Performance and dimensions are transcribed from the supplied concept sheet and are not independently verified.",
+  "reference": {"label": "NASA lift-plus-cruise reference vehicle", "url": "https://ntrs.nasa.gov/citations/20230018312"}
+}

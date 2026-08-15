@@ -1,0 +1,28 @@
+{
+  "id": "passenger-octocopter-vtol",
+  "index": "12",
+  "category": "ADVANCED AIR MOBILITY",
+  "status": "CONCEPT STUDY",
+  "navTitle": "Passenger Octocopter",
+  "navSubtitle": "Eight-motor cabin VTOL",
+  "kicker": "REDUNDANT LIFT / PASSENGER OCTOCOPTER",
+  "title": "Passenger Octocopter VTOL",
+  "watermark": "NEERAJ / AAM-12",
+  "description": "A passenger VTOL study distributing eight motors around a protective ring and central cabin. The architecture explores propulsion redundancy, symmetric lift, occupant packaging, and the structural challenge of connecting a wide rotor frame to a compact fuselage.",
+  "scope": ["Eight-motor lift redundancy", "Central passenger cabin", "Ring-frame structural architecture"],
+  "metrics": [
+    {"label": "DIAMETER", "value": "8600 mm"},
+    {"label": "MTOW", "value": "600 kg"},
+    {"label": "PAYLOAD", "value": "200 kg"},
+    {"label": "ENDURANCE", "value": "60 min"}
+  ],
+  "views": [
+    {"key": "perspective", "label": "Perspective", "image": "views/perspective.jpg", "alt": "Perspective view of the passenger octocopter VTOL concept"},
+    {"key": "top", "label": "Top", "image": "views/top.jpg", "alt": "Top view of the passenger octocopter VTOL concept"},
+    {"key": "front", "label": "Front", "image": "views/front.jpg", "alt": "Front view of the passenger octocopter VTOL concept"},
+    {"key": "side", "label": "Side", "image": "views/side.jpg", "alt": "Side view of the passenger octocopter VTOL concept"}
+  ],
+  "sourceBoard": "../../new_updated /ChatGPT Image Aug 7, 2026, 06_52_04 PM.png",
+  "dataBasis": "Performance and dimensions are transcribed from the supplied concept sheet and are not independently verified.",
+  "reference": {"label": "NASA urban air mobility reference vehicles", "url": "https://www.nasa.gov/reference/uam-refs/"}
+}

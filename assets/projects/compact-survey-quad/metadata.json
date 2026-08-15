@@ -1,0 +1,28 @@
+{
+  "id": "compact-survey-quad",
+  "index": "09",
+  "category": "MULTIROTOR",
+  "status": "CONCEPT STUDY",
+  "navTitle": "Survey Quad",
+  "navSubtitle": "Compact camera platform",
+  "kicker": "AERIAL IMAGING / COMPACT SURVEY QUADCOPTER",
+  "title": "Compact Survey Quadcopter",
+  "watermark": "NEERAJ / SURVEY-09",
+  "description": "A compact quadcopter study with an underslung camera position, folding-friendly arm geometry, and a low central body. The configuration is aimed at short-range mapping, inspection, and visual data capture where rapid deployment matters.",
+  "scope": ["Stabilized imaging payload", "Compact field deployment", "Inspection and mapping missions"],
+  "metrics": [
+    {"label": "FOOTPRINT", "value": "560 x 560 mm"},
+    {"label": "MTOW", "value": "2.5 kg"},
+    {"label": "SPEED", "value": "80 km/h"},
+    {"label": "ENDURANCE", "value": "40 min"}
+  ],
+  "views": [
+    {"key": "perspective", "label": "Perspective", "image": "views/perspective.jpg", "alt": "Perspective view of the compact survey quadcopter concept"},
+    {"key": "top", "label": "Top", "image": "views/top.jpg", "alt": "Top view of the compact survey quadcopter concept"},
+    {"key": "front", "label": "Front", "image": "views/front.jpg", "alt": "Front view of the compact survey quadcopter concept"},
+    {"key": "side", "label": "Side", "image": "views/side.jpg", "alt": "Side view of the compact survey quadcopter concept"}
+  ],
+  "sourceBoard": "../../new_updated /ChatGPT Image Aug 7, 2026, 06_23_20 PM.png",
+  "dataBasis": "Performance and dimensions are transcribed from the supplied concept sheet and are not independently verified.",
+  "reference": {"label": "FAA delivery-drone configuration overview", "url": "https://www.faa.gov/uas/advanced_operations/package_delivery_drone"}
+}

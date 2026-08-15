@@ -1,0 +1,29 @@
+{
+  "id": "quad-lift-fuselage",
+  "index": "04",
+  "category": "VTOL",
+  "status": "CONCEPT STUDY",
+  "navTitle": "Quad-Lift Fuselage",
+  "navSubtitle": "Distributed-lift testbed",
+  "kicker": "DISTRIBUTED LIFT / MODULAR FUSELAGE TESTBED",
+  "title": "Quad-Lift Fuselage Platform",
+  "watermark": "NEERAJ / VTOL-04",
+  "description": "A distributed-lift concept pairing four large rotors with a slender, payload-oriented fuselage. The configuration prioritizes vertical lift, unobstructed body volume, and a straightforward structural path between propulsion arms and the central airframe.",
+  "scope": ["Four-rotor lift architecture", "Central payload fuselage", "Propulsion-arm load paths"],
+  "metrics": [
+    {"label": "ROTOR SPAN", "value": "3594 mm"},
+    {"label": "LENGTH", "value": "2160 mm"},
+    {"label": "HEIGHT", "value": "430 mm"},
+    {"label": "LAYOUT", "value": "QUAD LIFT"}
+  ],
+  "views": [
+    {"key": "perspective", "label": "Perspective", "image": "views/perspective.jpg", "alt": "Perspective view of the quad-lift fuselage UAV concept"},
+    {"key": "top", "label": "Top", "image": "views/top.jpg", "alt": "Top view of the quad-lift fuselage UAV concept"},
+    {"key": "front", "label": "Front", "image": "views/front.jpg", "alt": "Front view of the quad-lift fuselage UAV concept"},
+    {"key": "side", "label": "Side", "image": "views/side.jpg", "alt": "Side view of the quad-lift fuselage UAV concept"},
+    {"key": "rear", "label": "Rear", "image": "views/rear.jpg", "alt": "Rear view of the quad-lift fuselage UAV concept"}
+  ],
+  "sourceBoard": "../../new_updated /ChatGPT Image Aug 7, 2026, 06_01_18 PM.png",
+  "dataBasis": "Dimensions are transcribed from the supplied concept sheet; no flight-performance claim is made.",
+  "reference": {"label": "NASA multirotor configuration trades", "url": "https://ntrs.nasa.gov/api/citations/20205004075/downloads/1428_Withrow_070720.pdf"}
+}

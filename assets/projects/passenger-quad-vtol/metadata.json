@@ -1,0 +1,28 @@
+{
+  "id": "passenger-quad-vtol",
+  "index": "10",
+  "category": "ADVANCED AIR MOBILITY",
+  "status": "CONCEPT STUDY",
+  "navTitle": "Passenger Quad VTOL",
+  "navSubtitle": "Four-rotor mobility cabin",
+  "kicker": "PERSONAL MOBILITY / FOUR-ROTOR CABIN VTOL",
+  "title": "Passenger Quad-Rotor VTOL",
+  "watermark": "NEERAJ / AAM-10",
+  "description": "A personal-mobility VTOL concept built around four large rotors and a protected central cabin. The direct-lift layout favors mechanical clarity and hover authority while making occupant packaging, landing clearance, and rotor separation primary design drivers.",
+  "scope": ["Protected passenger cabin", "Four-rotor direct lift", "Landing and rotor-clearance study"],
+  "metrics": [
+    {"label": "WIDTH", "value": "4200 mm"},
+    {"label": "MTOW", "value": "600 kg"},
+    {"label": "PAYLOAD", "value": "220 kg"},
+    {"label": "TARGET", "value": "100 km/h"}
+  ],
+  "views": [
+    {"key": "perspective", "label": "Perspective", "image": "views/perspective.jpg", "alt": "Perspective view of the passenger quad-rotor VTOL concept"},
+    {"key": "top", "label": "Top", "image": "views/top.jpg", "alt": "Top view of the passenger quad-rotor VTOL concept"},
+    {"key": "front", "label": "Front", "image": "views/front.jpg", "alt": "Front view of the passenger quad-rotor VTOL concept"},
+    {"key": "side", "label": "Side", "image": "views/side.jpg", "alt": "Side view of the passenger quad-rotor VTOL concept"}
+  ],
+  "sourceBoard": "../../new_updated /ChatGPT Image Aug 7, 2026, 06_26_12 PM.png",
+  "dataBasis": "Performance and dimensions are transcribed from the supplied concept sheet and are not independently verified.",
+  "reference": {"label": "NASA urban air mobility reference vehicles", "url": "https://www.nasa.gov/reference/uam-refs/"}
+}

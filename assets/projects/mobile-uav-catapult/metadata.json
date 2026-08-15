@@ -1,0 +1,28 @@
+{
+  "id": "mobile-uav-catapult",
+  "index": "11",
+  "category": "GROUND SYSTEMS",
+  "status": "CONCEPT STUDY",
+  "navTitle": "Mobile UAV Catapult",
+  "navSubtitle": "Trailer launch system",
+  "kicker": "LAUNCH HARDWARE / MOBILE UAV CATAPULT",
+  "title": "Mobile Assisted-Launch System",
+  "watermark": "NEERAJ / GSE-11",
+  "description": "A trailer-mounted assisted-launch concept for fixed-wing UAV field operations. The truss rail, adjustable launch angle, transport chassis, and aircraft interface are packaged as one deployable ground-support system for runway-independent missions.",
+  "scope": ["Mobile truss launch rail", "Adjustable aircraft interface", "Runway-independent deployment"],
+  "metrics": [
+    {"label": "RAIL LENGTH", "value": "4600 mm"},
+    {"label": "LAUNCH ANGLE", "value": "12-18 deg"},
+    {"label": "AIRCRAFT", "value": "UP TO 60 kg"},
+    {"label": "SYSTEM MASS", "value": "350 kg"}
+  ],
+  "views": [
+    {"key": "perspective", "label": "Perspective", "image": "views/perspective.jpg", "alt": "Perspective view of the mobile UAV catapult concept"},
+    {"key": "top", "label": "Top", "image": "views/top.jpg", "alt": "Top view of the mobile UAV catapult concept"},
+    {"key": "front", "label": "Front", "image": "views/front.jpg", "alt": "Front view of the mobile UAV catapult concept"},
+    {"key": "side", "label": "Side", "image": "views/side.jpg", "alt": "Side view of the mobile UAV catapult concept"}
+  ],
+  "sourceBoard": "../../new_updated /ChatGPT Image Aug 7, 2026, 06_37_54 PM.png",
+  "dataBasis": "Performance and dimensions are transcribed from the supplied concept sheet and are not independently verified.",
+  "reference": {"label": "AeroVironment assisted-launch example", "url": "https://investor.avinc.com/news-releases/news-release-details/aerovironment-expands-capabilities-its-puma-uas-product-line-new"}
+}

@@ -1,0 +1,28 @@
+{
+  "id": "carbon-fixed-wing",
+  "index": "06",
+  "category": "FIXED WING",
+  "status": "CONCEPT STUDY",
+  "navTitle": "Carbon Fixed Wing",
+  "navSubtitle": "Long-fuselage survey UAV",
+  "kicker": "COMPOSITE AIRFRAME / LONG-FUSELAGE FIXED WING",
+  "title": "Carbon Composite Fixed-Wing UAV",
+  "watermark": "NEERAJ / UAV-06",
+  "description": "A long-fuselage composite UAV concept with a conventional wing and tail, shaped for stable cruise and adaptable mission equipment. The arrangement keeps propulsion, avionics, and payload volume separated along a serviceable central body.",
+  "scope": ["Composite fuselage structure", "Stable survey-aircraft layout", "Modular mission-equipment bay"],
+  "metrics": [
+    {"label": "LENGTH", "value": "3594 mm"},
+    {"label": "MTOW", "value": "25.76 kg"},
+    {"label": "SPEED", "value": "80 km/h"},
+    {"label": "ENDURANCE", "value": "100 min"}
+  ],
+  "views": [
+    {"key": "perspective", "label": "Perspective", "image": "views/perspective.jpg", "alt": "Perspective view of the carbon composite fixed-wing UAV concept"},
+    {"key": "top", "label": "Top", "image": "views/top.jpg", "alt": "Top view of the carbon composite fixed-wing UAV concept"},
+    {"key": "front", "label": "Front", "image": "views/front.jpg", "alt": "Front view of the carbon composite fixed-wing UAV concept"},
+    {"key": "side", "label": "Side", "image": "views/side.jpg", "alt": "Side view of the carbon composite fixed-wing UAV concept"}
+  ],
+  "sourceBoard": "../../new_updated /ChatGPT Image Aug 7, 2026, 06_18_20 PM.png",
+  "dataBasis": "Performance and dimensions are transcribed from the supplied concept sheet and are not independently verified.",
+  "reference": {"label": "FAA delivery-drone configuration overview", "url": "https://www.faa.gov/uas/advanced_operations/package_delivery_drone"}
+}
