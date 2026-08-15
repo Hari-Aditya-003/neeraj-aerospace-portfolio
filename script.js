@@ -2,6 +2,7 @@ const body = document.body;
 const header = document.querySelector(".site-header");
 const progress = document.querySelector(".scroll-progress");
 const navToggle = document.querySelector(".nav-toggle");
+const navLinksContainer = document.querySelector(".nav-links");
 const navLinks = [...document.querySelectorAll(".nav-links a")];
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 const hero = document.querySelector(".hero");
@@ -341,19 +342,52 @@ const updateScrollState = () => {
 updateScrollState();
 window.addEventListener("scroll", updateScrollState, { passive: true });
 
+const mobileNavigation = window.matchMedia("(max-width: 720px)");
+
+const setMenuOpen = (open, { focusFirst = false, restoreFocus = false } = {}) => {
+  const menuIsOpen = open && mobileNavigation.matches;
+  body.classList.toggle("menu-open", menuIsOpen);
+  navToggle.setAttribute("aria-expanded", String(menuIsOpen));
+  navToggle.setAttribute("aria-label", menuIsOpen ? "Close menu" : "Open menu");
+  navLinksContainer.inert = mobileNavigation.matches && !menuIsOpen;
+
+  if (mobileNavigation.matches) {
+    navLinksContainer.setAttribute("aria-hidden", String(!menuIsOpen));
+  } else {
+    navLinksContainer.removeAttribute("aria-hidden");
+  }
+
+  if (menuIsOpen && focusFirst) {
+    window.requestAnimationFrame(() => navLinks[0]?.focus());
+  } else if (!menuIsOpen && restoreFocus) {
+    navToggle.focus();
+  }
+};
+
 navToggle.addEventListener("click", () => {
-  const open = body.classList.toggle("menu-open");
-  navToggle.setAttribute("aria-expanded", String(open));
-  navToggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+  setMenuOpen(!body.classList.contains("menu-open"), { focusFirst: true });
 });
 
 navLinks.forEach((link) => {
   link.addEventListener("click", () => {
-    body.classList.remove("menu-open");
-    navToggle.setAttribute("aria-expanded", "false");
-    navToggle.setAttribute("aria-label", "Open menu");
+    setMenuOpen(false);
   });
 });
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && body.classList.contains("menu-open")) {
+    setMenuOpen(false, { restoreFocus: true });
+  }
+});
+
+document.addEventListener("pointerdown", (event) => {
+  if (body.classList.contains("menu-open") && !header.contains(event.target)) {
+    setMenuOpen(false);
+  }
+});
+
+mobileNavigation.addEventListener("change", () => setMenuOpen(false));
+setMenuOpen(false);
 
 document.querySelectorAll(".contact-copy").forEach((button) => {
   button.addEventListener("click", async () => {
@@ -506,6 +540,7 @@ const countObserver = new IntersectionObserver(
 document.querySelectorAll("[data-count]").forEach((element) => countObserver.observe(element));
 
 const programImage = document.querySelector("#program-image");
+const programSection = document.querySelector("#systems");
 const twinViewer = document.querySelector(".twin-viewer");
 const viewerStatus = document.querySelector("#viewer-status");
 const programNav = document.querySelector("#program-nav");
@@ -527,6 +562,7 @@ let currentProgramView = "";
 let programSwapTimer;
 let programCycleTimer;
 let programCyclePaused = false;
+let programSectionVisible = false;
 
 const getCurrentProgram = () => programs.get(currentProgram);
 const getProgramView = (program, viewKey) =>
@@ -625,7 +661,7 @@ const renderProgramMetrics = (program) => {
 const resetProgramCycleBar = () => {
   programCycleBar.classList.remove("running");
   void programCycleBar.offsetWidth;
-  if (!reducedMotion && !programCyclePaused && !document.hidden) {
+  if (!reducedMotion && !programCyclePaused && !document.hidden && programSectionVisible) {
     programCycleBar.classList.add("running");
   }
 };
@@ -676,7 +712,7 @@ const advanceProgramView = () => {
 
 const restartProgramCycle = () => {
   stopProgramCycle();
-  if (reducedMotion || programCyclePaused || document.hidden) return;
+  if (reducedMotion || programCyclePaused || document.hidden || !programSectionVisible) return;
   const program = getCurrentProgram();
   if (!program || program.views.length < 2) return;
   resetProgramCycleBar();
@@ -819,6 +855,16 @@ twinViewer.addEventListener("focusout", (event) => {
   programCyclePaused = false;
   restartProgramCycle();
 });
+
+const programVisibilityObserver = new IntersectionObserver(
+  ([entry]) => {
+    programSectionVisible = entry.isIntersecting;
+    if (programSectionVisible) restartProgramCycle();
+    else stopProgramCycle();
+  },
+  { rootMargin: "180px 0px", threshold: 0.05 }
+);
+programVisibilityObserver.observe(programSection);
 
 document.addEventListener("visibilitychange", () => {
   if (document.hidden) stopProgramCycle();
@@ -1057,6 +1103,66 @@ const flightProofRecords = [
 const flightProofWall = document.querySelector("#flight-proof-wall");
 const portraitFlightProofRecords = new Set(["06", "08", "09", "10", "11"]);
 let flightProofVideos = [];
+const visibleFlightProofVideos = new Map();
+const compactFlightProofPlayback = window.matchMedia("(max-width: 720px)");
+
+const loadFlightProofVideo = (video) => {
+  if (video.dataset.loaded === "true") return;
+  const source = video.querySelector("source");
+  if (!source || !video.dataset.src) return;
+  if (video.dataset.poster) video.poster = video.dataset.poster;
+  source.src = video.dataset.src;
+  video.preload = "metadata";
+  video.dataset.loaded = "true";
+  video.load();
+};
+
+const syncFlightProofPlayback = () => {
+  const playbackLimit = compactFlightProofPlayback.matches ? 2 : 3;
+  const activeVideos = new Set(
+    [...visibleFlightProofVideos.entries()]
+      .sort((left, right) => right[1] - left[1])
+      .slice(0, playbackLimit)
+      .map(([video]) => video)
+  );
+
+  flightProofVideos.forEach((video) => {
+    const shouldPlay =
+      !document.hidden && !reducedMotion && activeVideos.has(video);
+    if (shouldPlay) {
+      loadFlightProofVideo(video);
+      video.play().catch(() => {});
+    } else {
+      video.pause();
+      video.closest(".flight-proof-card")?.classList.remove("is-playing");
+    }
+  });
+};
+
+const flightProofLoadObserver = new IntersectionObserver(
+  (entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      loadFlightProofVideo(entry.target);
+      flightProofLoadObserver.unobserve(entry.target);
+    });
+  },
+  { rootMargin: "700px 0px", threshold: 0.01 }
+);
+
+const flightProofPlaybackObserver = new IntersectionObserver(
+  (entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting && entry.intersectionRatio >= 0.18) {
+        visibleFlightProofVideos.set(entry.target, entry.intersectionRatio);
+      } else {
+        visibleFlightProofVideos.delete(entry.target);
+      }
+    });
+    syncFlightProofPlayback();
+  },
+  { rootMargin: "80px 0px", threshold: [0, 0.18, 0.45] }
+);
 
 const renderFlightProofWall = () => {
   const cards = flightProofRecords.map((record) => {
@@ -1081,17 +1187,17 @@ const renderFlightProofWall = () => {
     }`;
     card.setAttribute("aria-labelledby", titleId);
     media.className = "flight-proof-card-media";
-    video.autoplay = !reducedMotion;
+    video.autoplay = false;
     video.defaultMuted = true;
     video.muted = true;
     video.loop = true;
     video.playsInline = true;
-    video.preload = "metadata";
-    video.poster = record.poster;
+    video.preload = "none";
+    video.dataset.poster = record.poster;
     video.controls = reducedMotion;
+    video.dataset.src = record.video;
     video.setAttribute("aria-describedby", descriptionId);
     video.setAttribute("aria-label", `${record.title}, real test video`);
-    source.src = record.video;
     source.type = "video/mp4";
     video.append(source);
 
@@ -1140,22 +1246,16 @@ const renderFlightProofWall = () => {
 
   flightProofWall.replaceChildren(...cards);
   flightProofVideos = Array.from(flightProofWall.querySelectorAll("video"));
-};
-
-const playFlightProofWall = () => {
-  if (document.hidden || reducedMotion) return;
-  flightProofVideos.forEach((video) => video.play().catch(() => {}));
+  flightProofVideos.forEach((video) => {
+    flightProofLoadObserver.observe(video);
+    flightProofPlaybackObserver.observe(video);
+  });
 };
 
 renderFlightProofWall();
-requestAnimationFrame(playFlightProofWall);
-window.addEventListener("load", playFlightProofWall);
+compactFlightProofPlayback.addEventListener("change", syncFlightProofPlayback);
 document.addEventListener("visibilitychange", () => {
-  if (document.hidden) {
-    flightProofVideos.forEach((video) => video.pause());
-    return;
-  }
-  playFlightProofWall();
+  syncFlightProofPlayback();
 });
 
 if (!reducedMotion) {
@@ -1183,41 +1283,71 @@ const createFlightScene = () => {
   const canvas = document.querySelector("#flight-space");
   if (!canvas || !window.THREE || reducedMotion) return null;
 
+  let webglContext;
+  try {
+    const contextOptions = { alpha: true, antialias: true };
+    webglContext =
+      canvas.getContext("webgl2", contextOptions) ||
+      canvas.getContext("webgl", contextOptions);
+  } catch {
+    webglContext = null;
+  }
+  if (!webglContext) {
+    canvas.hidden = true;
+    return null;
+  }
+
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(46, 1, 0.1, 100);
   camera.position.set(0, 0, 9.4);
 
   let renderer;
   try {
-    renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+    renderer = new THREE.WebGLRenderer({
+      canvas,
+      context: webglContext,
+      alpha: true,
+      antialias: true,
+    });
   } catch {
     canvas.hidden = true;
     return null;
   }
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.6));
   renderer.setClearColor(0x000000, 0);
+  renderer.outputColorSpace = THREE.SRGBColorSpace;
 
   const root = new THREE.Group();
   root.position.set(2.3, 0, -0.35);
-  root.rotation.set(-0.14, 0.03, 0.34);
+  root.rotation.set(-0.09, 0.02, 0.2);
   scene.add(root);
 
-  const quality = window.innerWidth < 720 ? 0.66 : 1.42;
+  const quality = window.innerWidth < 720 ? 0.72 : window.innerWidth < 1100 ? 1.18 : 1.52;
   const base = [];
   const colorValues = [];
-  const blue = new THREE.Color(0x63d2f3);
-  const paleBlue = new THREE.Color(0xadebff);
-  const amber = new THREE.Color(0xffffff);
-  const red = new THREE.Color(0x8de0f7);
+  const orange = new THREE.Color(0xf25a16);
+  const softOrange = new THREE.Color(0xff9a63);
+  const white = new THREE.Color(0xffffff);
+  const steel = new THREE.Color(0xb8c1c8);
+  const cyan = new THREE.Color(0x35d7d0);
+  const electricBlue = new THREE.Color(0x4f86ff);
+  const gold = new THREE.Color(0xffc857);
 
   const addPoint = (x, y, z, accent = 0) => {
     base.push(x, y, z);
+    const colorRoll = Math.random();
     const color =
       accent > 0.86
-        ? red
+        ? orange
         : accent > 0.7
-          ? amber
-        : blue.clone().lerp(paleBlue, Math.min(1, accent + Math.random() * 0.34));
+          ? white
+          : colorRoll > 0.78
+            ? cyan.clone().lerp(white, 0.28)
+            : colorRoll > 0.53
+              ? electricBlue.clone().lerp(steel, 0.52)
+              : steel
+                  .clone()
+                  .lerp(softOrange, Math.min(0.38, accent * 0.28 + Math.random() * 0.1));
     colorValues.push(color.r, color.g, color.b);
   };
 
@@ -1247,6 +1377,22 @@ const createFlightScene = () => {
     addPoint(x, y, z, spanRatio > 0.82 ? 0.88 : Math.random() * 0.35);
   }
 
+  // Densely sampled aerodynamic edges keep the point cloud legible at a glance.
+  for (let index = 0; index < Math.floor(760 * quality); index += 1) {
+    const side = Math.random() > 0.5 ? 1 : -1;
+    const span = 0.14 + Math.random() * 3.48;
+    const spanRatio = span / 3.62;
+    const chord = 1.42 - spanRatio * 1.05;
+    const centerY = 0.43 - span * 0.145;
+    const edge = Math.random() > 0.5 ? 1 : -1;
+    addPoint(
+      side * span + (Math.random() - 0.5) * 0.018,
+      centerY + edge * chord * 0.5 + (Math.random() - 0.5) * 0.018,
+      (Math.random() - 0.5) * 0.025,
+      spanRatio > 0.76 ? 0.96 : edge > 0 ? 0.78 : 0.64
+    );
+  }
+
   for (let index = 0; index < Math.floor(940 * quality); index += 1) {
     const side = Math.random() > 0.5 ? 1 : -1;
     const span = 0.08 + Math.random() * 1.5;
@@ -1257,6 +1403,20 @@ const createFlightScene = () => {
       -1.91 - span * 0.025 + (Math.random() - 0.5) * chord,
       (Math.random() - 0.5) * 0.055,
       spanRatio > 0.78 ? 0.8 : 0.16
+    );
+  }
+
+  for (let index = 0; index < Math.floor(280 * quality); index += 1) {
+    const side = Math.random() > 0.5 ? 1 : -1;
+    const span = 0.07 + Math.random() * 1.53;
+    const spanRatio = span / 1.6;
+    const chord = 0.58 - spanRatio * 0.28;
+    const edge = Math.random() > 0.5 ? 1 : -1;
+    addPoint(
+      side * span,
+      -1.91 - span * 0.025 + edge * chord * 0.5,
+      (Math.random() - 0.5) * 0.022,
+      spanRatio > 0.72 ? 0.9 : 0.74
     );
   }
 
@@ -1282,12 +1442,33 @@ const createFlightScene = () => {
   const basePositions = new Float32Array(base);
   const flyingWingPositions = new Float32Array(base.length);
   const quadVtolPositions = new Float32Array(base.length);
+  const satellitePositions = new Float32Array(base.length);
   const scattered = new Float32Array(base.length);
-  const colors = new Float32Array(colorValues);
+  const baseColors = new Float32Array(colorValues);
+  const flyingWingColors = new Float32Array(base.length);
+  const quadVtolColors = new Float32Array(base.length);
+  const satelliteColors = new Float32Array(base.length);
+  const colors = new Float32Array(baseColors);
   const hashValue = (value) => {
     const result = Math.sin(value * 12.9898) * 43758.5453;
     return result - Math.floor(result);
   };
+  const writeColor = (target, offset, color, intensity = 1) => {
+    target[offset] = Math.min(1, color.r * intensity);
+    target[offset + 1] = Math.min(1, color.g * intensity);
+    target[offset + 2] = Math.min(1, color.b * intensity);
+  };
+  const writePosition = (target, offset, x, y, z) => {
+    target[offset] = x;
+    target[offset + 1] = y;
+    target[offset + 2] = z;
+  };
+  const droneMotors = [
+    { x: -1.42, y: 0.62, z: -0.28, blade: 0.08 },
+    { x: 1.38, y: 0.64, z: -0.24, blade: -0.06 },
+    { x: -1.82, y: 0.8, z: 0.24, blade: 0.16 },
+    { x: 1.76, y: 0.78, z: 0.28, blade: -0.14 },
+  ];
 
   for (let offset = 0; offset < base.length; offset += 3) {
     const pointIndex = offset / 3;
@@ -1295,61 +1476,516 @@ const createFlightScene = () => {
     const secondary = hashValue(pointIndex + 37.2);
     const tertiary = hashValue(pointIndex + 71.9);
 
-    if (primary < 0.12) {
-      const bodyAngle = secondary * Math.PI * 2;
-      const bodyRadius = Math.sqrt(tertiary);
-      flyingWingPositions[offset] = Math.cos(bodyAngle) * bodyRadius * 0.42;
-      flyingWingPositions[offset + 1] = -1.78 + hashValue(pointIndex + 96.5) * 3.62;
-      flyingWingPositions[offset + 2] =
-        Math.sin(bodyAngle) * bodyRadius * 0.12;
-    } else {
-      const side = primary > 0.58 ? 1 : -1;
-      const spanRatio = Math.pow(
-        hashValue(pointIndex + 124.4),
-        0.72
+    const detailA = hashValue(pointIndex + 96.5);
+    const detailB = hashValue(pointIndex + 124.4);
+    const detailC = hashValue(pointIndex + 151.1);
+
+    // 02: blended-wing UAV with real planform, propulsion and control-surface detail.
+    if (primary < 0.13) {
+      const bodyY = -1.62 + detailA * 3.55;
+      const profile = Math.pow(
+        Math.max(0.04, Math.sin(((bodyY + 1.62) / 3.55) * Math.PI)),
+        0.5
       );
-      const span = 0.2 + spanRatio * 3.38;
-      const chord = 1.55 - spanRatio * 1.1;
-      const sweptCenter = 0.78 - span * 0.37;
-      flyingWingPositions[offset] =
-        side * span + (hashValue(pointIndex + 151.1) - 0.5) * 0.05;
-      flyingWingPositions[offset + 1] =
-        sweptCenter + (secondary - 0.5) * chord;
-      flyingWingPositions[offset + 2] = (tertiary - 0.5) * 0.09;
+      const angle = secondary * Math.PI * 2;
+      const radius = Math.sqrt(tertiary) * profile;
+      writePosition(
+        flyingWingPositions,
+        offset,
+        Math.cos(angle) * radius * 0.5,
+        bodyY,
+        Math.sin(angle) * radius * 0.2
+      );
+      writeColor(
+        flyingWingColors,
+        offset,
+        bodyY > 1.35 ? white : tertiary > 0.82 ? softOrange : steel,
+        bodyY > 1.35 ? 1.1 : 0.94
+      );
+    } else if (primary < 0.82) {
+      const side = detailA > 0.5 ? 1 : -1;
+      const spanRatio = Math.pow(detailB, 0.76);
+      const span = 0.16 + spanRatio * 3.55;
+      const leadingEdge = 1.58 - spanRatio * 2.12;
+      const trailingEdge = -1.52 + spanRatio * 0.5;
+      const edgeRoll = hashValue(pointIndex + 139.8);
+      const chordRatio =
+        edgeRoll < 0.14 ? 1 : edgeRoll < 0.28 ? 0 : secondary;
+      const y = trailingEdge + (leadingEdge - trailingEdge) * chordRatio;
+      const camber =
+        Math.sin(chordRatio * Math.PI) * (1 - spanRatio) * 0.14;
+      writePosition(
+        flyingWingPositions,
+        offset,
+        side * span + (detailC - 0.5) * 0.025,
+        y,
+        camber + (tertiary - 0.5) * 0.045
+      );
+      const onEdge = edgeRoll < 0.28;
+      const wingColor =
+        spanRatio > 0.9
+          ? softOrange
+          : onEdge
+            ? white
+            : spanRatio > 0.58
+              ? cyan
+              : electricBlue;
+      writeColor(flyingWingColors, offset, wingColor, onEdge ? 1.08 : 0.88);
+    } else if (primary < 0.9) {
+      const side = detailA > 0.5 ? 1 : -1;
+      const podY = -0.68 + secondary * 1.58;
+      const profile = Math.max(0.08, Math.sin(((podY + 0.68) / 1.58) * Math.PI));
+      const angle = tertiary * Math.PI * 2;
+      const radius = Math.sqrt(detailC);
+      writePosition(
+        flyingWingPositions,
+        offset,
+        side * 0.56 + Math.cos(angle) * radius * profile * 0.2,
+        podY,
+        0.09 + Math.sin(angle) * radius * profile * 0.15
+      );
+      writeColor(
+        flyingWingColors,
+        offset,
+        podY > 0.62 ? orange : podY < -0.48 ? cyan : steel,
+        1.02
+      );
+    } else if (primary < 0.97) {
+      const side = detailA > 0.5 ? 1 : -1;
+      const spanRatio = 0.18 + detailB * 0.78;
+      const span = spanRatio * 3.55;
+      const trailingEdge = -1.52 + spanRatio * 0.5;
+      writePosition(
+        flyingWingPositions,
+        offset,
+        side * span,
+        trailingEdge + 0.1 + (secondary - 0.5) * 0.025,
+        0.055 + (tertiary - 0.5) * 0.02
+      );
+      writeColor(
+        flyingWingColors,
+        offset,
+        spanRatio > 0.82 ? softOrange : white,
+        1.08
+      );
+    } else {
+      const side = detailA > 0.5 ? 1 : -1;
+      writePosition(
+        flyingWingPositions,
+        offset,
+        side * (3.55 + secondary * 0.14),
+        -0.98 + (tertiary - 0.5) * 0.34,
+        detailC * 0.58
+      );
+      writeColor(flyingWingColors, offset, detailA > 0.5 ? orange : cyan, 1.08);
     }
 
-    const quadSegment = hashValue(pointIndex + 183.6);
-    if (quadSegment < 0.24) {
-      const bodyAngle = secondary * Math.PI * 2;
-      const radius = Math.sqrt(tertiary);
-      quadVtolPositions[offset] = Math.cos(bodyAngle) * radius * 0.72;
-      quadVtolPositions[offset + 1] = Math.sin(bodyAngle) * radius * 1.04;
-      quadVtolPositions[offset + 2] =
-        (hashValue(pointIndex + 211.3) - 0.5) * 0.22;
-    } else if (quadSegment < 0.64) {
-      const arm = Math.floor(hashValue(pointIndex + 243.8) * 4);
-      const signX = arm % 2 === 0 ? -1 : 1;
-      const signY = arm < 2 ? -1 : 1;
-      const distance = hashValue(pointIndex + 279.2);
-      quadVtolPositions[offset] =
-        signX * (0.28 + distance * 1.34) + (secondary - 0.5) * 0.07;
-      quadVtolPositions[offset + 1] =
-        signY * (0.2 + distance * 0.85) + (tertiary - 0.5) * 0.07;
-      quadVtolPositions[offset + 2] =
-        (hashValue(pointIndex + 307.5) - 0.5) * 0.07;
-    } else {
-      const rotor = Math.floor(hashValue(pointIndex + 336.7) * 4);
-      const centerX = rotor % 2 === 0 ? -1.68 : 1.68;
-      const centerY = rotor < 2 ? -1.08 : 1.08;
+    // 03: industrial survey quadcopter with a three-quarter hardware silhouette.
+    const droneSegment = hashValue(pointIndex + 183.6);
+    if (droneSegment < 0.31) {
+      const face = Math.floor(detailA * 6);
+      let bodyX = -0.92 + secondary * 1.86;
+      const noseTaper = bodyX > 0.54 ? 1 - ((bodyX - 0.54) / 0.4) * 0.42 : 1;
+      const tailTaper = bodyX < -0.7 ? 1 - ((-0.7 - bodyX) / 0.22) * 0.22 : 1;
+      const profile = Math.max(0.56, noseTaper * tailTaper);
+      const yExtent = 0.34 * profile;
+      const zExtent = 0.28 * profile;
+      let bodyY = (tertiary - 0.5) * yExtent * 2;
+      let bodyZ = (detailB - 0.5) * zExtent * 2;
+      if (face === 0 || face === 1) {
+        bodyX = face === 0 ? -0.92 : 0.94;
+      }
+      if (face === 2 || face === 3) bodyY = face === 2 ? -yExtent : yExtent;
+      if (face === 4 || face === 5) bodyZ = face === 4 ? -zExtent : zExtent;
+      const edgePoint = detailC < 0.26;
+      if (edgePoint && face < 2) bodyY = tertiary > 0.5 ? yExtent : -yExtent;
+      if (edgePoint && face >= 2) bodyX = secondary > 0.5 ? 0.94 : -0.92;
+      writePosition(quadVtolPositions, offset, bodyX, bodyY, bodyZ);
+      writeColor(
+        quadVtolColors,
+        offset,
+        edgePoint
+          ? white
+          : face > 3 && detailB > 0.72
+            ? cyan
+            : steel,
+        edgePoint ? 1.08 : face > 3 ? 0.94 : 0.86
+      );
+    } else if (droneSegment < 0.54) {
+      const armIndex = Math.floor(detailA * droneMotors.length);
+      const motor = droneMotors[armIndex];
+      const distance = detailB;
+      const startX = motor.x > 0 ? 0.5 : -0.5;
+      const startY = 0.18;
+      const deltaX = motor.x - startX;
+      const deltaY = motor.y - startY;
+      const armLength = Math.hypot(deltaX, deltaY);
+      const rail = tertiary > 0.5 ? 1 : -1;
+      const railOffset = rail * 0.035 + (detailC - 0.5) * 0.018;
+      writePosition(
+        quadVtolPositions,
+        offset,
+        startX + deltaX * distance - (deltaY / armLength) * railOffset,
+        startY + deltaY * distance + (deltaX / armLength) * railOffset,
+        motor.z * 0.22 + (motor.z - motor.z * 0.22) * distance +
+          (secondary - 0.5) * 0.035
+      );
+      writeColor(
+        quadVtolColors,
+        offset,
+        distance > 0.84 ? softOrange : rail > 0 ? steel : cyan,
+        distance > 0.84 ? 1.05 : rail > 0 ? 0.9 : 0.84
+      );
+    } else if (droneSegment < 0.65) {
+      const motorIndex = Math.floor(detailA * droneMotors.length);
+      const motor = droneMotors[motorIndex];
       const angle = secondary * Math.PI * 2;
-      const radius = 0.47 + (tertiary - 0.5) * 0.1;
-      quadVtolPositions[offset] = centerX + Math.cos(angle) * radius;
-      quadVtolPositions[offset + 1] = centerY + Math.sin(angle) * radius;
-      quadVtolPositions[offset + 2] =
-        (hashValue(pointIndex + 364.1) - 0.5) * 0.06;
+      const radius = detailB < 0.58 ? 0.16 : Math.sqrt(tertiary) * 0.15;
+      writePosition(
+        quadVtolPositions,
+        offset,
+        motor.x + Math.cos(angle) * radius,
+        motor.y + Math.sin(angle) * radius * 0.7,
+        motor.z + 0.1 + (detailC - 0.5) * 0.18
+      );
+      writeColor(
+        quadVtolColors,
+        offset,
+        detailC > 0.72 ? softOrange : detailB < 0.58 ? steel : white,
+        detailC > 0.72 ? 1.05 : 0.94
+      );
+    } else if (droneSegment < 0.86) {
+      const motorIndex = Math.floor(detailA * droneMotors.length);
+      const motor = droneMotors[motorIndex];
+      const bladeSide = secondary > 0.5 ? 1 : -1;
+      const direction = motor.blade + (bladeSide < 0 ? Math.PI : 0);
+      const distance = 0.13 + detailB * 0.84;
+      const taper = 1 - (distance - 0.13) / 0.84;
+      const thickness = (tertiary - 0.5) * (0.035 + taper * 0.055);
+      writePosition(
+        quadVtolPositions,
+        offset,
+        motor.x + Math.cos(direction) * distance - Math.sin(direction) * thickness,
+        motor.y +
+          Math.sin(direction) * distance + Math.cos(direction) * thickness,
+        motor.z + 0.22 + (detailC - 0.5) * 0.022
+      );
+      writeColor(
+        quadVtolColors,
+        offset,
+        distance > 0.86 ? softOrange : bladeSide > 0 ? white : steel,
+        distance > 0.86 ? 1.06 : bladeSide > 0 ? 1 : 0.88
+      );
+    } else if (droneSegment < 0.93) {
+      const sphereZ = secondary * 2 - 1;
+      const sphereRadius = Math.sqrt(Math.max(0, 1 - sphereZ * sphereZ));
+      const angle = tertiary * Math.PI * 2;
+      const lensPoint = detailA < 0.26;
+      if (lensPoint) {
+        const lensAngle = detailB * Math.PI * 2;
+        writePosition(
+          quadVtolPositions,
+          offset,
+          0.42 + Math.cos(lensAngle) * 0.18,
+          -0.52 + Math.sin(lensAngle) * 0.15,
+          -0.58 + (detailC - 0.5) * 0.018
+        );
+      } else {
+        writePosition(
+          quadVtolPositions,
+          offset,
+          0.42 + Math.cos(angle) * sphereRadius * 0.28,
+          -0.5 + Math.sin(angle) * sphereRadius * 0.24,
+          -0.34 + sphereZ * 0.25
+        );
+      }
+      writeColor(
+        quadVtolColors,
+        offset,
+        lensPoint ? electricBlue : detailC > 0.76 ? white : steel,
+        lensPoint ? 1.08 : 0.94
+      );
+    } else {
+      const side = detailA > 0.5 ? 1 : -1;
+      const structure = detailB;
+      if (structure < 0.56) {
+        writePosition(
+          quadVtolPositions,
+          offset,
+          -1.02 + secondary * 2.02,
+          -0.84 + (tertiary - 0.5) * 0.035,
+          side * 0.38 + (detailC - 0.5) * 0.035
+        );
+      } else {
+        const supportX = structure < 0.78 ? -0.58 : 0.58;
+        const distance = secondary;
+        writePosition(
+          quadVtolPositions,
+          offset,
+          supportX + (tertiary - 0.5) * 0.04,
+          -0.14 - distance * 0.7,
+          side * (0.18 + distance * 0.2)
+        );
+      }
+      writeColor(quadVtolColors, offset, structure < 0.56 ? steel : white, 0.96);
+    }
+
+    // 04: communications satellite with surfaced bus, segmented arrays and dish hardware.
+    const satelliteSegment = hashValue(pointIndex + 397.6);
+    if (satelliteSegment < 0.28) {
+      const face = Math.floor(detailA * 6);
+      const xExtent = 0.68;
+      const yExtent = 0.76;
+      const zExtent = 0.44;
+      let x = (secondary - 0.5) * xExtent * 2;
+      let y = (tertiary - 0.5) * yExtent * 2;
+      let z = (detailC - 0.5) * zExtent * 2;
+      if (face === 0 || face === 1) x = face === 0 ? -xExtent : xExtent;
+      if (face === 2 || face === 3) y = face === 2 ? -yExtent : yExtent;
+      if (face === 4 || face === 5) z = face === 4 ? -zExtent : zExtent;
+      const edgeDetail = hashValue(pointIndex + 388.3);
+      if (edgeDetail < 0.24) {
+        if (face < 2) y = tertiary > 0.5 ? yExtent : -yExtent;
+        if (face >= 2 && face < 4) x = secondary > 0.5 ? xExtent : -xExtent;
+        if (face > 3) x = secondary > 0.5 ? xExtent : -xExtent;
+      }
+      writePosition(satellitePositions, offset, x, y, z);
+      writeColor(
+        satelliteColors,
+        offset,
+        edgeDetail < 0.24 ? white : face > 3 ? steel : face > 1 ? gold : softOrange,
+        edgeDetail < 0.24 ? 1.08 : 0.94
+      );
+    } else if (satelliteSegment < 0.75) {
+      const side = detailA > 0.5 ? 1 : -1;
+      const panelU = detailB;
+      const segment = Math.min(2, Math.floor(panelU * 3));
+      let localU = panelU * 3 - segment;
+      let panelV = tertiary;
+      const gridDetail = hashValue(pointIndex + 459.7);
+      if (gridDetail < 0.18) localU = Math.round(localU * 4) / 4;
+      if (gridDetail >= 0.18 && gridDetail < 0.36) {
+        panelV = Math.round(panelV * 5) / 5;
+      }
+      const panelDistance = 0.8 + segment * 1.04 + localU * 0.92;
+      writePosition(
+        satellitePositions,
+        offset,
+        side * panelDistance,
+        (panelV - 0.5) * 1.02,
+        0.08 + (panelDistance - 0.8) * 0.055 + (detailC - 0.5) * 0.025
+      );
+      writeColor(
+        satelliteColors,
+        offset,
+        gridDetail < 0.36 ? cyan : electricBlue,
+        gridDetail < 0.36 ? 1.08 : 0.88 + panelV * 0.1
+      );
+    } else if (satelliteSegment < 0.86) {
+      const angle = secondary * Math.PI * 2;
+      const rimPoint = detailA < 0.34;
+      const radius = rimPoint ? 0.52 : 0.07 + Math.sqrt(tertiary) * 0.45;
+      writePosition(
+        satellitePositions,
+        offset,
+        -0.08 + Math.cos(angle) * radius * 0.92,
+        0.93 + Math.sin(angle) * radius * 0.58,
+        0.24 + Math.pow(radius / 0.52, 2) * 0.3
+      );
+      writeColor(
+        satelliteColors,
+        offset,
+        rimPoint ? white : tertiary > 0.58 ? steel : gold,
+        rimPoint ? 1.08 : 0.94
+      );
+    } else if (satelliteSegment < 0.96) {
+      const hardware = detailA;
+      if (hardware < 0.52) {
+        const distance = secondary;
+        writePosition(
+          satellitePositions,
+          offset,
+          -0.08 + distance * 0.32 + (tertiary - 0.5) * 0.025,
+          0.92 + distance * 0.64,
+          0.53 - distance * 0.22
+        );
+      } else if (hardware < 0.8) {
+        const side = tertiary > 0.5 ? 1 : -1;
+        writePosition(
+          satellitePositions,
+          offset,
+          side * (0.62 + secondary * 0.18),
+          (detailC - 0.5) * 0.08,
+          (detailB - 0.5) * 0.08
+        );
+      } else {
+        const strut = Math.floor(tertiary * 3);
+        const startAngle = strut * ((Math.PI * 2) / 3) + 0.3;
+        const distance = secondary;
+        writePosition(
+          satellitePositions,
+          offset,
+          -0.08 + Math.cos(startAngle) * 0.48 * (1 - distance),
+          0.93 + Math.sin(startAngle) * 0.28 * (1 - distance) + distance * 0.26,
+          0.48 - distance * 0.14
+        );
+      }
+      writeColor(satelliteColors, offset, hardware < 0.52 ? orange : white, 1.05);
+    } else {
+      const nozzle = Math.floor(detailA * 4);
+      const side = nozzle % 2 === 0 ? -1 : 1;
+      const depth = nozzle < 2 ? -1 : 1;
+      const distance = secondary;
+      const angle = tertiary * Math.PI * 2;
+      writePosition(
+        satellitePositions,
+        offset,
+        side * 0.42 + Math.cos(angle) * distance * 0.16,
+        -0.86 - distance * 0.34,
+        depth * 0.28 + Math.sin(angle) * distance * 0.16
+      );
+      writeColor(satelliteColors, offset, distance > 0.72 ? orange : gold, 1.04);
     }
   }
-  const shapeTargets = [basePositions, flyingWingPositions, quadVtolPositions];
+
+  const compactGeometry = window.innerWidth < 720;
+  const droneTilt = compactGeometry ? 0.2 : 0.24;
+  const droneTiltCos = Math.cos(droneTilt);
+  const droneTiltSin = Math.sin(droneTilt);
+  for (let offset = 0; offset < base.length; offset += 3) {
+    flyingWingPositions[offset] =
+      flyingWingPositions[offset] * (compactGeometry ? 0.72 : 1) -
+      (compactGeometry ? 0 : 0.18);
+    quadVtolPositions[offset] =
+      quadVtolPositions[offset] * (compactGeometry ? 0.78 : 1.02) -
+      (compactGeometry ? 0.04 : 1.72);
+    const droneY = quadVtolPositions[offset + 1];
+    const droneZ = quadVtolPositions[offset + 2];
+    quadVtolPositions[offset + 1] =
+      (droneY * droneTiltCos - droneZ * droneTiltSin) *
+      (compactGeometry ? 0.88 : 1);
+    quadVtolPositions[offset + 2] =
+      droneY * droneTiltSin + droneZ * droneTiltCos;
+    satellitePositions[offset] =
+      satellitePositions[offset] * (compactGeometry ? 0.72 : 1) -
+      (compactGeometry ? 0.18 : 1.88);
+    satellitePositions[offset + 1] *= compactGeometry ? 0.9 : 1;
+  }
+
+  const loadDroneReference = () => {
+    const droneReference = new Image();
+    droneReference.decoding = "async";
+    droneReference.addEventListener("load", () => {
+      const sampleCanvas = document.createElement("canvas");
+      sampleCanvas.width = 384;
+      sampleCanvas.height = 256;
+      const sampleContext = sampleCanvas.getContext("2d", {
+        willReadFrequently: true,
+      });
+      if (!sampleContext) return;
+
+      sampleContext.clearRect(0, 0, sampleCanvas.width, sampleCanvas.height);
+      sampleContext.drawImage(
+        droneReference,
+        0,
+        0,
+        sampleCanvas.width,
+        sampleCanvas.height
+      );
+      const imageData = sampleContext.getImageData(
+        0,
+        0,
+        sampleCanvas.width,
+        sampleCanvas.height
+      ).data;
+      const silhouettePixels = [];
+      const edgePixels = [];
+      const alphaAt = (x, y) =>
+        imageData[(y * sampleCanvas.width + x) * 4 + 3];
+
+      for (let y = 1; y < sampleCanvas.height - 1; y += 1) {
+        for (let x = 1; x < sampleCanvas.width - 1; x += 1) {
+          const alpha = alphaAt(x, y);
+          if (alpha < 52) continue;
+          const pixelIndex = y * sampleCanvas.width + x;
+          silhouettePixels.push(pixelIndex);
+          if (
+            alphaAt(x - 1, y) < 38 ||
+            alphaAt(x + 1, y) < 38 ||
+            alphaAt(x, y - 1) < 38 ||
+            alphaAt(x, y + 1) < 38
+          ) {
+            edgePixels.push(pixelIndex);
+          }
+        }
+      }
+      if (!silhouettePixels.length) return;
+
+      for (let offset = 0; offset < quadVtolPositions.length; offset += 3) {
+        const pointIndex = offset / 3;
+        const useEdge = edgePixels.length > 0 && hashValue(pointIndex + 612.4) < 0.34;
+        const sourcePixels = useEdge ? edgePixels : silhouettePixels;
+        const pixelIndex =
+          sourcePixels[
+            Math.floor(hashValue(pointIndex + 684.2) * sourcePixels.length)
+          ];
+        const x = pixelIndex % sampleCanvas.width;
+        const y = Math.floor(pixelIndex / sampleCanvas.width);
+        const colorIndex = pixelIndex * 4;
+        const red = imageData[colorIndex] / 255;
+        const green = imageData[colorIndex + 1] / 255;
+        const blue = imageData[colorIndex + 2] / 255;
+        const luminance = red * 0.2126 + green * 0.7152 + blue * 0.0722;
+        const normalizedX =
+          (x / (sampleCanvas.width - 1) - 0.5) * 5.55;
+        const normalizedY =
+          (0.5 - y / (sampleCanvas.height - 1)) * 3.7;
+        const jitterX =
+          (hashValue(pointIndex + 728.9) - 0.5) * (useEdge ? 0.012 : 0.032);
+        const jitterY =
+          (hashValue(pointIndex + 764.1) - 0.5) * (useEdge ? 0.012 : 0.032);
+
+        quadVtolPositions[offset] =
+          (normalizedX + jitterX) * (compactGeometry ? 0.66 : 0.9) -
+          (compactGeometry ? 0.04 : 1.55);
+        quadVtolPositions[offset + 1] =
+          (normalizedY + jitterY) * (compactGeometry ? 0.66 : 0.86);
+        quadVtolPositions[offset + 2] =
+          (luminance - 0.45) * 0.5 +
+          (hashValue(pointIndex + 811.6) - 0.5) * 0.055;
+
+        const warmAccent = red > green * 1.2 && red > blue * 1.5 && red > 0.34;
+        const coolAccent =
+          blue > red * 1.15 && green > red * 1.12 && green > 0.24;
+        if (warmAccent) {
+          writeColor(quadVtolColors, offset, softOrange, 0.92 + luminance * 0.18);
+        } else if (coolAccent) {
+          writeColor(quadVtolColors, offset, cyan, 0.88 + luminance * 0.18);
+        } else if (useEdge) {
+          writeColor(quadVtolColors, offset, white, 0.68 + luminance * 0.34);
+        } else {
+          const metal = steel.clone().lerp(white, Math.min(0.72, luminance * 0.82));
+          writeColor(quadVtolColors, offset, metal, 0.58 + luminance * 0.5);
+        }
+      }
+    });
+    droneReference.src =
+      "assets/generated/hero/drone-reference-v1.png?v=20260816-1";
+  };
+  loadDroneReference();
+
+  const shapeTargets = [
+    basePositions,
+    flyingWingPositions,
+    quadVtolPositions,
+    satellitePositions,
+  ];
+  const shapeColors = [
+    baseColors,
+    flyingWingColors,
+    quadVtolColors,
+    satelliteColors,
+  ];
 
   for (let index = 0; index < base.length; index += 3) {
     const radius = 2.4 + Math.random() * 5.8;
@@ -1367,6 +2003,7 @@ const createFlightScene = () => {
   particleGeometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
   particleGeometry.setAttribute("color", new THREE.BufferAttribute(colors, 3));
   particleGeometry.getAttribute("position").setUsage(THREE.DynamicDrawUsage);
+  particleGeometry.getAttribute("color").setUsage(THREE.DynamicDrawUsage);
 
   const spriteCanvas = document.createElement("canvas");
   spriteCanvas.width = 64;
@@ -1374,14 +2011,15 @@ const createFlightScene = () => {
   const spriteContext = spriteCanvas.getContext("2d");
   const gradient = spriteContext.createRadialGradient(32, 32, 0, 32, 32, 32);
   gradient.addColorStop(0, "rgba(255,255,255,1)");
-  gradient.addColorStop(0.25, "rgba(255,255,255,0.92)");
+  gradient.addColorStop(0.16, "rgba(255,255,255,0.98)");
+  gradient.addColorStop(0.42, "rgba(255,255,255,0.5)");
   gradient.addColorStop(1, "rgba(255,255,255,0)");
   spriteContext.fillStyle = gradient;
   spriteContext.fillRect(0, 0, 64, 64);
   const sprite = new THREE.CanvasTexture(spriteCanvas);
 
   const particleMaterial = new THREE.PointsMaterial({
-    size: window.innerWidth < 720 ? 0.056 : 0.047,
+    size: window.innerWidth < 720 ? 0.064 : 0.054,
     map: sprite,
     vertexColors: true,
     transparent: true,
@@ -1390,27 +2028,85 @@ const createFlightScene = () => {
     depthWrite: false,
     alphaTest: 0.02,
   });
+  const haloMaterial = new THREE.PointsMaterial({
+    size: window.innerWidth < 720 ? 0.112 : 0.098,
+    map: sprite,
+    vertexColors: true,
+    transparent: true,
+    opacity: 0.14,
+    blending: THREE.AdditiveBlending,
+    depthWrite: false,
+    alphaTest: 0.005,
+  });
+  const particleHalo = new THREE.Points(particleGeometry, haloMaterial);
   const aircraftParticles = new THREE.Points(particleGeometry, particleMaterial);
+  root.add(particleHalo);
   root.add(aircraftParticles);
 
   const ringMaterial = new THREE.MeshBasicMaterial({
-    color: 0xadebff,
+    color: 0xff7a3d,
     transparent: true,
-    opacity: 0.12,
+    opacity: 0.24,
     side: THREE.DoubleSide,
   });
   const orbitRing = new THREE.Mesh(new THREE.RingGeometry(4.15, 4.17, 160), ringMaterial);
   orbitRing.position.set(0, 0, -0.85);
   root.add(orbitRing);
 
-  const starCount = Math.floor(1150 * quality);
+  const innerRingMaterial = ringMaterial.clone();
+  innerRingMaterial.color.setHex(0xffffff);
+  innerRingMaterial.opacity = 0.12;
+  const innerOrbitRing = new THREE.Mesh(
+    new THREE.RingGeometry(3.06, 3.075, 144),
+    innerRingMaterial
+  );
+  innerOrbitRing.position.set(0, 0, -0.82);
+  root.add(innerOrbitRing);
+
+  const orbitDotPositions = [];
+  for (let index = 0; index < 260; index += 1) {
+    if (index % 22 < 15) {
+      const angle = (index / 260) * Math.PI * 2;
+      orbitDotPositions.push(Math.cos(angle) * 4.72, Math.sin(angle) * 4.72, -0.92);
+    }
+  }
+  const orbitDotGeometry = new THREE.BufferGeometry();
+  orbitDotGeometry.setAttribute(
+    "position",
+    new THREE.Float32BufferAttribute(orbitDotPositions, 3)
+  );
+  const orbitDotMaterial = new THREE.PointsMaterial({
+    size: window.innerWidth < 720 ? 0.042 : 0.052,
+    map: sprite,
+    color: 0xff9a63,
+    transparent: true,
+    opacity: 0.62,
+    blending: THREE.AdditiveBlending,
+    depthWrite: false,
+  });
+  const orbitDots = new THREE.Points(orbitDotGeometry, orbitDotMaterial);
+  root.add(orbitDots);
+
+  const starCount = Math.floor(1760 * quality);
   const starPositions = new Float32Array(starCount * 3);
   const starColors = new Float32Array(starCount * 3);
   for (let index = 0; index < starCount; index += 1) {
     starPositions[index * 3] = (Math.random() - 0.5) * 18;
     starPositions[index * 3 + 1] = (Math.random() - 0.5) * 10;
     starPositions[index * 3 + 2] = -1 - Math.random() * 7;
-    const color = Math.random() > 0.96 ? red : Math.random() > 0.86 ? amber : blue;
+    const colorRoll = Math.random();
+    const color =
+      colorRoll > 0.96
+        ? gold
+        : colorRoll > 0.88
+            ? cyan
+            : colorRoll > 0.8
+              ? electricBlue
+              : colorRoll > 0.67
+                ? orange
+                : colorRoll > 0.36
+                  ? white
+                  : steel;
     starColors[index * 3] = color.r;
     starColors[index * 3 + 1] = color.g;
     starColors[index * 3 + 2] = color.b;
@@ -1419,82 +2115,44 @@ const createFlightScene = () => {
   starGeometry.setAttribute("position", new THREE.BufferAttribute(starPositions, 3));
   starGeometry.setAttribute("color", new THREE.BufferAttribute(starColors, 3));
   const starMaterial = new THREE.PointsMaterial({
-    size: 0.029,
+    size: window.innerWidth < 720 ? 0.032 : 0.036,
     map: sprite,
     vertexColors: true,
     transparent: true,
-    opacity: 0.72,
-    blending: THREE.NormalBlending,
+    opacity: 0.82,
+    blending: THREE.AdditiveBlending,
     depthWrite: false,
   });
   const starField = new THREE.Points(starGeometry, starMaterial);
   scene.add(starField);
 
-  const miniDronePositions = [];
-  for (let index = 0; index < 48; index += 1) {
-    const angle = (index / 48) * Math.PI * 2;
-    miniDronePositions.push(Math.cos(angle) * 0.16, Math.sin(angle) * 0.07, 0);
+  const dustCount = Math.floor((window.innerWidth < 720 ? 150 : 320) * quality);
+  const dustPositions = new Float32Array(dustCount * 3);
+  const dustColors = new Float32Array(dustCount * 3);
+  for (let index = 0; index < dustCount; index += 1) {
+    dustPositions[index * 3] = (Math.random() - 0.5) * 15;
+    dustPositions[index * 3 + 1] = (Math.random() - 0.5) * 8.5;
+    dustPositions[index * 3 + 2] = 0.4 + Math.random() * 4.8;
+    const dustPalette = [softOrange, white, cyan, steel];
+    const color = dustPalette[Math.floor(Math.random() * dustPalette.length)];
+    dustColors[index * 3] = color.r;
+    dustColors[index * 3 + 1] = color.g;
+    dustColors[index * 3 + 2] = color.b;
   }
-  const rotorCenters = [
-    [-0.34, -0.21],
-    [0.34, -0.21],
-    [-0.34, 0.21],
-    [0.34, 0.21],
-  ];
-  rotorCenters.forEach(([centerX, centerY]) => {
-    for (let index = 0; index < 16; index += 1) {
-      const ratio = index / 15;
-      miniDronePositions.push(centerX * ratio, centerY * ratio, 0);
-    }
-    for (let index = 0; index < 28; index += 1) {
-      const angle = (index / 28) * Math.PI * 2;
-      miniDronePositions.push(
-        centerX + Math.cos(angle) * 0.105,
-        centerY + Math.sin(angle) * 0.105,
-        0
-      );
-    }
-  });
-
-  const miniDroneGeometry = new THREE.BufferGeometry();
-  miniDroneGeometry.setAttribute(
-    "position",
-    new THREE.Float32BufferAttribute(miniDronePositions, 3)
-  );
-  const miniDroneMaterial = new THREE.PointsMaterial({
-    size: window.innerWidth < 720 ? 0.038 : 0.028,
+  const dustGeometry = new THREE.BufferGeometry();
+  dustGeometry.setAttribute("position", new THREE.BufferAttribute(dustPositions, 3));
+  dustGeometry.setAttribute("color", new THREE.BufferAttribute(dustColors, 3));
+  const dustMaterial = new THREE.PointsMaterial({
+    size: window.innerWidth < 720 ? 0.038 : 0.048,
     map: sprite,
-    color: 0xadebff,
+    vertexColors: true,
     transparent: true,
-    opacity: 0.38,
-    blending: THREE.NormalBlending,
+    opacity: 0.54,
+    blending: THREE.AdditiveBlending,
     depthWrite: false,
   });
-  const miniDroneLayout = [
-    [-5.6, 2.75, -3.3, 0.62, -0.2],
-    [-5.15, -2.35, -4.5, 0.42, 0.28],
-    [5.4, 3.05, -3.8, 0.5, 0.18],
-    [6.15, -1.75, -5.2, 0.58, -0.36],
-    [0.4, 3.8, -5.5, 0.34, 0.1],
-    [-6.55, 0.25, -6.2, 0.32, -0.08],
-  ];
-  const miniDrones = miniDroneLayout
-    .slice(0, window.innerWidth < 720 ? 4 : miniDroneLayout.length)
-    .map(([x, y, z, scale, rotation], index) => {
-      const drone = new THREE.Points(miniDroneGeometry, miniDroneMaterial);
-      drone.position.set(x, y, z);
-      drone.scale.setScalar(scale);
-      drone.rotation.z = rotation;
-      drone.userData = {
-        baseX: x,
-        baseY: y,
-        baseRotation: rotation,
-        phase: index * 1.17,
-        speed: 0.34 + index * 0.035,
-      };
-      scene.add(drone);
-      return drone;
-    });
+  const foregroundDust = new THREE.Points(dustGeometry, dustMaterial);
+  scene.add(foregroundDust);
 
   const resize = () => {
     const rect = canvas.getBoundingClientRect();
@@ -1546,7 +2204,8 @@ const createFlightScene = () => {
     if (sceneActive) {
       const assemble = easeOutCubic(Math.min(1, Math.max(0, (elapsed - 0.72) / 2.15)));
       const dissolve = smoothstep(0.58, 1, scrollProgress);
-      const cycleTime = Math.max(0, elapsed - 0.4) % 30;
+      const cycleTime =
+        Math.max(0, elapsed - 0.4) % (shapeTargets.length * 10);
       const shapeIndex = Math.floor(cycleTime / 10);
       const nextShapeIndex = (shapeIndex + 1) % shapeTargets.length;
       const cycleLocal = cycleTime % 10;
@@ -1560,6 +2219,9 @@ const createFlightScene = () => {
             : smoothstep(8.45, 10, cycleLocal);
       const sourceShape = shapeTargets[shapeIndex];
       const targetShape = shapeTargets[nextShapeIndex];
+      const sourceColors = shapeColors[shapeIndex];
+      const targetColors = shapeColors[nextShapeIndex];
+      const colorBlend = smoothstep(7.15, 9.85, cycleLocal);
       morphState.currentShape = targetBlend === 0 ? shapeIndex : nextShapeIndex;
       morphState.nextShape = nextShapeIndex;
       morphState.morph = transitionProgress;
@@ -1583,7 +2245,9 @@ const createFlightScene = () => {
       const interactionX = pointer.x * 4.7 - (window.innerWidth < 720 ? 0 : 1.2);
       const interactionY = pointer.y * 3.15;
       const positionAttribute = particleGeometry.getAttribute("position");
+      const colorAttribute = particleGeometry.getAttribute("color");
       const values = positionAttribute.array;
+      const liveColors = colorAttribute.array;
 
       for (let index = 0; index < values.length; index += 3) {
         const bx =
@@ -1606,8 +2270,8 @@ const createFlightScene = () => {
         const dx = bx - interactionX;
         const dy = by - interactionY;
         const distance = Math.sqrt(dx * dx + dy * dy);
-        if (distance < 1.18 && assemble > 0.78 && dissolve < 0.9) {
-          const force = (1 - distance / 1.18) * 0.44;
+        if (distance < 1.52 && assemble > 0.78 && dissolve < 0.9) {
+          const force = (1 - distance / 1.52) * 0.62;
           x += (dx / Math.max(distance, 0.08)) * force;
           y += (dy / Math.max(distance, 0.08)) * force;
           z += force * 0.72;
@@ -1620,8 +2284,17 @@ const createFlightScene = () => {
         values[index] = x + shimmer;
         values[index + 1] = y + lift;
         values[index + 2] = z;
+        liveColors[index] =
+          sourceColors[index] + (targetColors[index] - sourceColors[index]) * colorBlend;
+        liveColors[index + 1] =
+          sourceColors[index + 1] +
+          (targetColors[index + 1] - sourceColors[index + 1]) * colorBlend;
+        liveColors[index + 2] =
+          sourceColors[index + 2] +
+          (targetColors[index + 2] - sourceColors[index + 2]) * colorBlend;
       }
       positionAttribute.needsUpdate = true;
+      colorAttribute.needsUpdate = true;
 
       const mobile = window.innerWidth < 720;
       const targetX = mobile ? 0 : 2.25 - scrollProgress * 0.72;
@@ -1629,42 +2302,89 @@ const createFlightScene = () => {
       root.position.x += (targetX - root.position.x) * 0.045;
       root.position.y += (targetY - root.position.y) * 0.045;
       root.rotation.x +=
-        (-0.14 + pointer.y * 0.04 + scrollProgress * 0.1 - root.rotation.x) *
+        (-0.09 + pointer.y * 0.035 + scrollProgress * 0.07 - root.rotation.x) *
         0.035;
       root.rotation.y +=
         (pointer.x * 0.08 + scrollProgress * 0.12 - root.rotation.y) * 0.035;
       root.rotation.z +=
-        (0.34 + pointer.x * 0.04 + scrollProgress * 0.08 - root.rotation.z) *
+        (0.2 + pointer.x * 0.035 + scrollProgress * 0.055 - root.rotation.z) *
         0.035;
       const targetScale = (mobile ? 0.77 : 1) + scrollProgress * (mobile ? 0.08 : 0.16);
       root.scale.setScalar(targetScale);
-      orbitRing.rotation.z = elapsed * 0.04;
-      ringMaterial.opacity = 0.11 + Math.sin(elapsed * 0.7) * 0.025;
-      starField.rotation.z = elapsed * 0.006;
-      starField.position.x = pointer.x * -0.14;
-      starField.position.y = pointer.y * -0.1;
-      miniDrones.forEach((drone) => {
-        const data = drone.userData;
-        drone.position.x = data.baseX + pointer.x * -0.08;
-        drone.position.y =
-          data.baseY + Math.sin(elapsed * data.speed + data.phase) * 0.12 + pointer.y * -0.05;
-        drone.rotation.z =
-          data.baseRotation + Math.sin(elapsed * data.speed * 0.7 + data.phase) * 0.08;
-      });
-      const visibleShape = targetBlend === 0 ? shapeIndex : nextShapeIndex;
-      const particlePresence = mobileScene || visibleShape === 0 ? 0 : 1;
-      particleMaterial.opacity = Math.max(
-        0,
-        shapeOpacity * particlePresence * 0.9 - dissolve * 0.15
-      );
+      orbitRing.rotation.z = elapsed * 0.065;
+      innerOrbitRing.rotation.z = elapsed * -0.045;
+      orbitDots.rotation.z = elapsed * -0.085;
+      orbitDots.scale.setScalar(1 + Math.sin(elapsed * 0.86) * 0.012);
+      ringMaterial.opacity = 0.2 + Math.sin(elapsed * 0.9) * 0.055;
+      innerRingMaterial.opacity = 0.1 + Math.cos(elapsed * 0.72) * 0.035;
+      orbitDotMaterial.opacity = 0.5 + Math.sin(elapsed * 1.15) * 0.16;
+      starField.rotation.z = elapsed * 0.012;
+      starField.position.x = pointer.x * -0.24 + Math.sin(elapsed * 0.16) * 0.08;
+      starField.position.y = pointer.y * -0.18 + Math.cos(elapsed * 0.13) * 0.06;
+      starMaterial.opacity = 0.72 + Math.sin(elapsed * 0.48) * 0.12;
+      foregroundDust.rotation.z = elapsed * -0.018;
+      foregroundDust.position.x = pointer.x * -0.46 + Math.cos(elapsed * 0.22) * 0.12;
+      foregroundDust.position.y = pointer.y * -0.32 + Math.sin(elapsed * 0.26) * 0.14;
+      dustMaterial.opacity = 0.43 + Math.sin(elapsed * 0.78) * 0.13;
+      const shapeVisibility = Math.max(0, shapeOpacity - dissolve * 0.16);
+      particleMaterial.opacity =
+        0.04 + shapeVisibility * (0.9 + Math.sin(elapsed * 1.4) * 0.05);
+      haloMaterial.opacity =
+        0.02 + shapeVisibility * (0.14 + Math.sin(elapsed * 1.1) * 0.025);
+      particleMaterial.size =
+        (mobileScene ? 0.064 : 0.054) * (1 + Math.sin(elapsed * 1.25) * 0.055);
+      haloMaterial.size =
+        (mobileScene ? 0.112 : 0.098) * (1 + Math.sin(elapsed * 1.08) * 0.06);
       renderer.render(scene, camera);
     }
     requestAnimationFrame(animate);
   };
   animate();
 
-  return { setProgress, miniDroneCount: miniDrones.length, morphState };
+  return { setProgress, shapeCount: shapeTargets.length, morphState };
 };
 
-window.flightScene = createFlightScene();
+const initializeFlightScene = () => {
+  if (window.flightScene || !window.THREE || reducedMotion) return;
+  window.flightScene = createFlightScene();
+  updateScrollState();
+};
+
+const loadFlightEngine = () => {
+  if (reducedMotion) return;
+  if (window.THREE) {
+    initializeFlightScene();
+    return;
+  }
+
+  const engine = document.createElement("script");
+  engine.src = "assets/vendor/three.min.js?v=20260801-4";
+  engine.async = true;
+  engine.fetchPriority = "low";
+  engine.addEventListener("load", initializeFlightScene, { once: true });
+  engine.addEventListener(
+    "error",
+    () => {
+      const canvas = document.querySelector("#flight-space");
+      if (canvas) canvas.hidden = true;
+    },
+    { once: true }
+  );
+  document.head.append(engine);
+};
+
+const scheduleFlightEngine = () => {
+  if ("requestIdleCallback" in window) {
+    window.requestIdleCallback(loadFlightEngine, { timeout: 900 });
+  } else {
+    window.setTimeout(loadFlightEngine, 250);
+  }
+};
+
+if (document.readyState !== "complete") {
+  window.addEventListener("load", scheduleFlightEngine, { once: true });
+} else {
+  scheduleFlightEngine();
+}
+
 updateScrollState();
