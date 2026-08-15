@@ -7862,6 +7862,42 @@ body.theme-v4 {
   transform: scale(1.025);
 }
 
+/* Hero portrait v3: color cutout supplied for the v4 launch composition. */
+.theme-v4 .hero-founder {
+  right: clamp(-18px, 2.8vw, 54px);
+  width: min(49vw, 720px);
+  height: 94%;
+  object-position: right bottom;
+  filter:
+    saturate(1.02)
+    contrast(1.035)
+    brightness(0.94)
+    drop-shadow(-20px 12px 28px rgba(0, 0, 0, 0.5))
+    drop-shadow(-2px 0 8px rgba(242, 90, 22, 0.16));
+}
+
+@media (max-width: 1080px) {
+  .theme-v4 .hero-founder {
+    right: -6vw;
+    width: min(58vw, 640px);
+    height: 91%;
+  }
+}
+
+@media (max-width: 720px) {
+  .theme-v4 .hero-founder {
+    right: -24vw;
+    width: 88vw;
+    height: 72%;
+    opacity: 0.46;
+    filter:
+      saturate(0.94)
+      contrast(1.04)
+      brightness(0.84)
+      drop-shadow(-12px 8px 20px rgba(0, 0, 0, 0.5));
+  }
+}
+
 /* Flight Proof: continuously playing masonry archive. */
 .theme-v4 .flight-proof {
   overflow: clip;
