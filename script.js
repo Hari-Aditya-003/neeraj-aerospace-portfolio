@@ -34,7 +34,7 @@ const createSiteFlightNetwork = () => {
     size: 0.4 + hash(index + 210.9) * 1.15,
     alpha: 0.08 + hash(index + 280.2) * 0.2,
     phase: hash(index + 336.1) * Math.PI * 2,
-    hue: hash(index + 366.4) > 0.9 ? "255,232,189" : "173,235,255",
+    hue: hash(index + 366.4) > 0.9 ? "160,205,255" : "173,235,255",
     drift: 0.0004 + hash(index + 391.7) * 0.0011,
   }));
   const meteors = Array.from({ length: compact ? 2 : 4 }, (_, index) => ({
@@ -1325,20 +1325,20 @@ const createFlightScene = () => {
   const quality = window.innerWidth < 720 ? 0.72 : window.innerWidth < 1100 ? 1.18 : 1.52;
   const base = [];
   const colorValues = [];
-  const orange = new THREE.Color(0xf25a16);
-  const softOrange = new THREE.Color(0xff9a63);
+  const primaryBlue = new THREE.Color(0x1f6feb);
+  const softBlue = new THREE.Color(0x78b7ff);
   const white = new THREE.Color(0xffffff);
   const steel = new THREE.Color(0xb8c1c8);
   const cyan = new THREE.Color(0x35d7d0);
   const electricBlue = new THREE.Color(0x4f86ff);
-  const gold = new THREE.Color(0xffc857);
+  const iceBlue = new THREE.Color(0x8ad7ff);
 
   const addPoint = (x, y, z, accent = 0) => {
     base.push(x, y, z);
     const colorRoll = Math.random();
     const color =
       accent > 0.86
-        ? orange
+        ? primaryBlue
         : accent > 0.7
           ? white
           : colorRoll > 0.78
@@ -1347,7 +1347,7 @@ const createFlightScene = () => {
               ? electricBlue.clone().lerp(steel, 0.52)
               : steel
                   .clone()
-                  .lerp(softOrange, Math.min(0.38, accent * 0.28 + Math.random() * 0.1));
+                  .lerp(softBlue, Math.min(0.38, accent * 0.28 + Math.random() * 0.1));
     colorValues.push(color.r, color.g, color.b);
   };
 
@@ -1499,7 +1499,7 @@ const createFlightScene = () => {
       writeColor(
         flyingWingColors,
         offset,
-        bodyY > 1.35 ? white : tertiary > 0.82 ? softOrange : steel,
+        bodyY > 1.35 ? white : tertiary > 0.82 ? softBlue : steel,
         bodyY > 1.35 ? 1.1 : 0.94
       );
     } else if (primary < 0.82) {
@@ -1524,7 +1524,7 @@ const createFlightScene = () => {
       const onEdge = edgeRoll < 0.28;
       const wingColor =
         spanRatio > 0.9
-          ? softOrange
+          ? softBlue
           : onEdge
             ? white
             : spanRatio > 0.58
@@ -1547,7 +1547,7 @@ const createFlightScene = () => {
       writeColor(
         flyingWingColors,
         offset,
-        podY > 0.62 ? orange : podY < -0.48 ? cyan : steel,
+        podY > 0.62 ? primaryBlue : podY < -0.48 ? cyan : steel,
         1.02
       );
     } else if (primary < 0.97) {
@@ -1565,7 +1565,7 @@ const createFlightScene = () => {
       writeColor(
         flyingWingColors,
         offset,
-        spanRatio > 0.82 ? softOrange : white,
+        spanRatio > 0.82 ? softBlue : white,
         1.08
       );
     } else {
@@ -1577,7 +1577,7 @@ const createFlightScene = () => {
         -0.98 + (tertiary - 0.5) * 0.34,
         detailC * 0.58
       );
-      writeColor(flyingWingColors, offset, detailA > 0.5 ? orange : cyan, 1.08);
+      writeColor(flyingWingColors, offset, detailA > 0.5 ? primaryBlue : cyan, 1.08);
     }
 
     // 03: industrial survey quadcopter with a three-quarter hardware silhouette.
@@ -1633,7 +1633,7 @@ const createFlightScene = () => {
       writeColor(
         quadVtolColors,
         offset,
-        distance > 0.84 ? softOrange : rail > 0 ? steel : cyan,
+        distance > 0.84 ? softBlue : rail > 0 ? steel : cyan,
         distance > 0.84 ? 1.05 : rail > 0 ? 0.9 : 0.84
       );
     } else if (droneSegment < 0.65) {
@@ -1651,7 +1651,7 @@ const createFlightScene = () => {
       writeColor(
         quadVtolColors,
         offset,
-        detailC > 0.72 ? softOrange : detailB < 0.58 ? steel : white,
+        detailC > 0.72 ? softBlue : detailB < 0.58 ? steel : white,
         detailC > 0.72 ? 1.05 : 0.94
       );
     } else if (droneSegment < 0.86) {
@@ -1673,7 +1673,7 @@ const createFlightScene = () => {
       writeColor(
         quadVtolColors,
         offset,
-        distance > 0.86 ? softOrange : bladeSide > 0 ? white : steel,
+        distance > 0.86 ? softBlue : bladeSide > 0 ? white : steel,
         distance > 0.86 ? 1.06 : bladeSide > 0 ? 1 : 0.88
       );
     } else if (droneSegment < 0.93) {
@@ -1753,7 +1753,7 @@ const createFlightScene = () => {
       writeColor(
         satelliteColors,
         offset,
-        edgeDetail < 0.24 ? white : face > 3 ? steel : face > 1 ? gold : softOrange,
+        edgeDetail < 0.24 ? white : face > 3 ? steel : face > 1 ? iceBlue : softBlue,
         edgeDetail < 0.24 ? 1.08 : 0.94
       );
     } else if (satelliteSegment < 0.75) {
@@ -1795,7 +1795,7 @@ const createFlightScene = () => {
       writeColor(
         satelliteColors,
         offset,
-        rimPoint ? white : tertiary > 0.58 ? steel : gold,
+        rimPoint ? white : tertiary > 0.58 ? steel : iceBlue,
         rimPoint ? 1.08 : 0.94
       );
     } else if (satelliteSegment < 0.96) {
@@ -1830,7 +1830,7 @@ const createFlightScene = () => {
           0.48 - distance * 0.14
         );
       }
-      writeColor(satelliteColors, offset, hardware < 0.52 ? orange : white, 1.05);
+      writeColor(satelliteColors, offset, hardware < 0.52 ? primaryBlue : white, 1.05);
     } else {
       const nozzle = Math.floor(detailA * 4);
       const side = nozzle % 2 === 0 ? -1 : 1;
@@ -1844,7 +1844,7 @@ const createFlightScene = () => {
         -0.86 - distance * 0.34,
         depth * 0.28 + Math.sin(angle) * distance * 0.16
       );
-      writeColor(satelliteColors, offset, distance > 0.72 ? orange : gold, 1.04);
+      writeColor(satelliteColors, offset, distance > 0.72 ? primaryBlue : iceBlue, 1.04);
     }
   }
 
@@ -1954,11 +1954,11 @@ const createFlightScene = () => {
           (luminance - 0.45) * 0.5 +
           (hashValue(pointIndex + 811.6) - 0.5) * 0.055;
 
-        const warmAccent = red > green * 1.2 && red > blue * 1.5 && red > 0.34;
+        const sourceAccent = red > green * 1.2 && red > blue * 1.5 && red > 0.34;
         const coolAccent =
           blue > red * 1.15 && green > red * 1.12 && green > 0.24;
-        if (warmAccent) {
-          writeColor(quadVtolColors, offset, softOrange, 0.92 + luminance * 0.18);
+        if (sourceAccent) {
+          writeColor(quadVtolColors, offset, softBlue, 0.92 + luminance * 0.18);
         } else if (coolAccent) {
           writeColor(quadVtolColors, offset, cyan, 0.88 + luminance * 0.18);
         } else if (useEdge) {
@@ -2044,7 +2044,7 @@ const createFlightScene = () => {
   root.add(aircraftParticles);
 
   const ringMaterial = new THREE.MeshBasicMaterial({
-    color: 0xff7a3d,
+    color: 0x4d93ff,
     transparent: true,
     opacity: 0.24,
     side: THREE.DoubleSide,
@@ -2078,7 +2078,7 @@ const createFlightScene = () => {
   const orbitDotMaterial = new THREE.PointsMaterial({
     size: window.innerWidth < 720 ? 0.042 : 0.052,
     map: sprite,
-    color: 0xff9a63,
+    color: 0x78b7ff,
     transparent: true,
     opacity: 0.62,
     blending: THREE.AdditiveBlending,
@@ -2097,13 +2097,13 @@ const createFlightScene = () => {
     const colorRoll = Math.random();
     const color =
       colorRoll > 0.96
-        ? gold
+        ? iceBlue
         : colorRoll > 0.88
             ? cyan
             : colorRoll > 0.8
               ? electricBlue
               : colorRoll > 0.67
-                ? orange
+                ? primaryBlue
                 : colorRoll > 0.36
                   ? white
                   : steel;
@@ -2133,7 +2133,7 @@ const createFlightScene = () => {
     dustPositions[index * 3] = (Math.random() - 0.5) * 15;
     dustPositions[index * 3 + 1] = (Math.random() - 0.5) * 8.5;
     dustPositions[index * 3 + 2] = 0.4 + Math.random() * 4.8;
-    const dustPalette = [softOrange, white, cyan, steel];
+    const dustPalette = [softBlue, white, cyan, steel];
     const color = dustPalette[Math.floor(Math.random() * dustPalette.length)];
     dustColors[index * 3] = color.r;
     dustColors[index * 3 + 1] = color.g;
