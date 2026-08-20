@@ -1,13 +1,13 @@
 {
   "id": "passenger-octocopter-vtol",
-  "index": "12",
+  "index": "11",
   "category": "ADVANCED AIR MOBILITY",
   "status": "CONCEPT STUDY",
   "navTitle": "Passenger Octocopter",
   "navSubtitle": "Eight-motor cabin VTOL",
   "kicker": "REDUNDANT LIFT / PASSENGER OCTOCOPTER",
   "title": "Passenger Octocopter VTOL",
-  "watermark": "NEERAJ / AAM-12",
+  "watermark": "NEERAJ / AAM-11",
   "description": "A passenger VTOL study distributing eight motors around a protective ring and central cabin. The architecture explores propulsion redundancy, symmetric lift, occupant packaging, and the structural challenge of connecting a wide rotor frame to a compact fuselage.",
   "scope": ["Eight-motor lift redundancy", "Central passenger cabin", "Ring-frame structural architecture"],
   "metrics": [

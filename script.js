@@ -554,8 +554,6 @@ const programKicker = document.querySelector("#program-kicker");
 const programTitle = document.querySelector("#program-title");
 const programCopy = document.querySelector("#program-copy");
 const programScope = document.querySelector("#program-scope");
-const programMetrics = document.querySelector("#program-metrics");
-const programDataBasis = document.querySelector("#program-data-basis");
 const programProofList = document.querySelector("#program-proof-list");
 let currentProgram = "";
 let currentProgramView = "";
@@ -567,6 +565,8 @@ let programSectionVisible = false;
 const getCurrentProgram = () => programs.get(currentProgram);
 const getProgramView = (program, viewKey) =>
   program?.views.find((view) => view.key === viewKey);
+const hasDimensionLabels = (program, view) =>
+  program?.id !== "long-endurance-fixed-wing" && view?.key !== "perspective";
 
 const swapProgramImage = (program, view) => {
   window.clearTimeout(programSwapTimer);
@@ -574,6 +574,8 @@ const swapProgramImage = (program, view) => {
   programWatermark.textContent = program.watermark;
   programAngle.textContent = `${view.label.toUpperCase()} / ${program.index}`;
   viewerStatus.textContent = `${view.label.toUpperCase()} VIEW / ${program.category}`;
+  twinViewer.classList.toggle("dimension-mask-active", hasDimensionLabels(program, view));
+  twinViewer.classList.toggle("dimension-mask-light", program.id === "quad-lift-fuselage");
 
   programSwapTimer = window.setTimeout(() => {
     const revealImage = () => programImage.classList.remove("switching");
@@ -638,24 +640,12 @@ const renderProgramProof = (program) => {
     image.src = view.image;
     image.alt = "";
     image.loading = "lazy";
+    image.classList.toggle("dimensions-hidden", hasDimensionLabels(program, view));
     label.textContent = view.label;
     button.append(image, label);
     return button;
   });
   programProofList.replaceChildren(...buttons);
-};
-
-const renderProgramMetrics = (program) => {
-  const metrics = program.metrics.map((metric) => {
-    const wrapper = document.createElement("div");
-    const label = document.createElement("dt");
-    const value = document.createElement("dd");
-    label.textContent = metric.label;
-    value.textContent = metric.value;
-    wrapper.append(label, value);
-    return wrapper;
-  });
-  programMetrics.replaceChildren(...metrics);
 };
 
 const resetProgramCycleBar = () => {
@@ -731,7 +721,6 @@ const renderProgram = (key, initial = false) => {
   programState.dataset.state = program.status.toLowerCase().replaceAll(" ", "-");
   programSource.href = program.reference.url;
   programSource.textContent = `${program.reference.label} ↗`;
-  programDataBasis.textContent = program.dataBasis;
   programScope.replaceChildren(
     ...program.scope.map((item) => {
       const entry = document.createElement("li");
@@ -740,7 +729,6 @@ const renderProgram = (key, initial = false) => {
     })
   );
 
-  renderProgramMetrics(program);
   renderProgramViews(program);
   renderProgramProof(program);
 
@@ -891,9 +879,12 @@ if (tiltViewer && !reducedMotion) {
 const dialog = document.querySelector(".image-dialog");
 const dialogImage = dialog.querySelector("img");
 const dialogCaption = dialog.querySelector("p");
-const openImageDialog = (src, alt, caption) => {
+const openImageDialog = (src, alt, caption, hideDimensions = false, lightBackground = false) => {
   dialogImage.src = src;
   dialogImage.alt = alt;
+  dialogImage.classList.toggle("dimensions-hidden", hideDimensions);
+  dialogImage.classList.toggle("dimensions-hidden-light", hideDimensions && lightBackground);
+  dialog.classList.toggle("dimensions-hidden-light", hideDimensions && lightBackground);
   dialogCaption.textContent = caption;
   dialog.showModal();
 };
@@ -902,7 +893,13 @@ document.querySelector(".expand-view").addEventListener("click", () => {
   const program = getCurrentProgram();
   const view = getProgramView(program, currentProgramView);
   if (!program || !view) return;
-  openImageDialog(view.image, view.alt, `${program.title} / ${view.label} view`);
+  openImageDialog(
+    view.image,
+    view.alt,
+    `${program.title} / ${view.label} view`,
+    hasDimensionLabels(program, view),
+    program.id === "quad-lift-fuselage"
+  );
 });
 
 document.addEventListener("click", (event) => {

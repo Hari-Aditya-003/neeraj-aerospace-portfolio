@@ -1,13 +1,13 @@
 {
   "id": "hybrid-propulsion-uav",
-  "index": "13",
+  "index": "12",
   "category": "PROPULSION R&D",
   "status": "CONCEPT STUDY",
   "navTitle": "Hybrid UAV Testbed",
   "navSubtitle": "Modular propulsion rig",
   "kicker": "HYBRID PROPULSION / MODULAR UAV TESTBED",
   "title": "Hybrid-Propulsion UAV Testbed",
-  "watermark": "NEERAJ / R&D-13",
+  "watermark": "NEERAJ / R&D-12",
   "description": "A skeletal UAV testbed designed to expose propulsion, energy-storage, control, and payload interfaces for rapid access. The open tubular structure supports subsystem iteration and ground testing before aerodynamic fairings or production packaging are finalized.",
   "scope": ["Accessible propulsion integration", "Modular energy-system packaging", "Ground-test-oriented airframe"],
   "metrics": [
